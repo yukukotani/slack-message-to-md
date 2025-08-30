@@ -1,7 +1,7 @@
 {
   "name": "slack-message-to-md",
   "description": "Convert Slack messages to Markdown format",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "keywords": [],
   "author": "Yuku Kotani (y.kotani@dr-ubie.com)",
   "license": "Apache-2.0",
