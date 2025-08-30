@@ -11,11 +11,7 @@ describe("convertMessage", () => {
       ts: "1704980400",
     };
     const result = convertMessage(message);
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.markdown).toContain("**@U123456** - 2024-01-11 13:40:00");
-      expect(result.markdown).toContain("Hello **world**!");
-    }
+    expect(result).toMatchSnapshot();
   });
 
   it("blocksを含むメッセージを変換", () => {
@@ -38,13 +34,7 @@ describe("convertMessage", () => {
       ],
     };
     const result = convertMessage(message);
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.markdown).toContain("# Important Notice");
-      expect(result.markdown).toContain(
-        "This is a **section** with formatting.",
-      );
-    }
+    expect(result).toMatchSnapshot();
   });
 
   it("attachmentsを含むメッセージを変換", () => {
@@ -62,13 +52,7 @@ describe("convertMessage", () => {
       ],
     };
     const result = convertMessage(message);
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.markdown).toContain("Check this out:");
-      expect(result.markdown).toContain("📎 **Attachment**");
-      expect(result.markdown).toContain("**Sample Attachment**");
-      expect(result.markdown).toContain("🟢");
-    }
+    expect(result).toMatchSnapshot();
   });
 
   it("filesを含むメッセージを変換", () => {
@@ -89,12 +73,7 @@ describe("convertMessage", () => {
       ],
     };
     const result = convertMessage(message);
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.markdown).toContain("Uploaded a file:");
-      expect(result.markdown).toContain("📄 **[document.pdf]");
-      expect(result.markdown).toContain("(PDF, 1 MB)");
-    }
+    expect(result).toMatchSnapshot();
   });
 
   it("reactionsを含むメッセージを変換", () => {
@@ -117,11 +96,7 @@ describe("convertMessage", () => {
       ],
     };
     const result = convertMessage(message);
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.markdown).toContain("Great job!");
-      expect(result.markdown).toContain("👍 2 | ❤️ 1");
-    }
+    expect(result).toMatchSnapshot();
   });
 
   it("スレッド情報を含むメッセージを変換", () => {
@@ -135,10 +110,7 @@ describe("convertMessage", () => {
       reply_users_count: 2,
     };
     const result = convertMessage(message);
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.markdown).toContain("💬 **Thread** (3 replies, 2 users)");
-    }
+    expect(result).toMatchSnapshot();
   });
 
   it("編集済みメッセージを変換", () => {
@@ -153,12 +125,7 @@ describe("convertMessage", () => {
       },
     };
     const result = convertMessage(message);
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.markdown).toContain(
-        "*(edited by @U123456 at 2024-01-11 14:40:00)*",
-      );
-    }
+    expect(result).toMatchSnapshot();
   });
 
   it("複数要素を含む複雑なメッセージを変換", () => {
@@ -198,15 +165,7 @@ describe("convertMessage", () => {
       ],
     };
     const result = convertMessage(message);
-    expect(result.success).toBe(true);
-    if (result.success) {
-      expect(result.markdown).toContain("**@U123456**");
-      // blocksがある場合、textは表示されない（Slack仕様に準拠）
-      expect(result.markdown).toContain("Block content");
-      expect(result.markdown).toContain("📎 **Attachment**");
-      expect(result.markdown).toContain("**image.png**");
-      expect(result.markdown).toContain("👍 1");
-    }
+    expect(result).toMatchSnapshot();
   });
 
   it("コンテンツがない場合のエラーハンドリング", () => {
@@ -215,10 +174,7 @@ describe("convertMessage", () => {
       ts: "1704980400",
     };
     const result = convertMessage(message);
-    expect(result.success).toBe(false);
-    if (!result.success) {
-      expect(result.error.code).toBe("MISSING_CONTENT");
-    }
+    expect(result).toMatchSnapshot();
   });
 });
 
@@ -239,13 +195,7 @@ describe("convertMultipleMessages", () => {
       },
     ];
     const results = convertMultipleMessages(messages);
-    expect(results).toHaveLength(2);
-    expect(results[0]?.success).toBe(true);
-    expect(results[1]?.success).toBe(true);
-    if (results[0]?.success && results[1]?.success) {
-      expect(results[0].markdown).toContain("First message");
-      expect(results[1].markdown).toContain("Second message");
-    }
+    expect(results).toMatchSnapshot();
   });
 
   it("エラーメッセージも含めて処理", () => {
@@ -262,13 +212,11 @@ describe("convertMultipleMessages", () => {
       },
     ];
     const results = convertMultipleMessages(messages);
-    expect(results).toHaveLength(2);
-    expect(results[0]?.success).toBe(true);
-    expect(results[1]?.success).toBe(false);
+    expect(results).toMatchSnapshot();
   });
 
   it("空の配列を処理", () => {
     const results = convertMultipleMessages([]);
-    expect(results).toEqual([]);
+    expect(results).toMatchSnapshot();
   });
 });

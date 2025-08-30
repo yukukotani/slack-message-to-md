@@ -1,0 +1,180 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`convertMessage 基本的なテキストメッセージを変換 1`] = `
+{
+  "markdown": 
+"**@U123456** - 2024-01-11 13:40:00
+
+Hello **world**!"
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage blocksを含むメッセージを変換 1`] = `
+{
+  "markdown": 
+"**@U123456** - 2024-01-11 13:40:00
+
+# Important Notice
+
+This is a **section** with formatting."
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage attachmentsを含むメッセージを変換 1`] = `
+{
+  "markdown": 
+"**@U123456** - 2024-01-11 13:40:00
+
+Check this out:
+
+📎 **Attachment**
+
+🟢
+
+**Sample Attachment**
+
+Attachment content"
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage filesを含むメッセージを変換 1`] = `
+{
+  "markdown": 
+"**@U123456** - 2024-01-11 13:40:00
+
+Uploaded a file:
+
+📄 **[document.pdf](https://files.slack.com/files-pri/T123456-F123456/document.pdf)** (PDF, 1 MB)"
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage reactionsを含むメッセージを変換 1`] = `
+{
+  "markdown": 
+"**@U123456** - 2024-01-11 13:40:00
+
+Great job!
+
+**Reactions:** 👍 2 | ❤️ 1"
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage スレッド情報を含むメッセージを変換 1`] = `
+{
+  "markdown": 
+"**@U123456** - 2024-01-11 13:40:00
+
+Original message
+
+💬 **Thread** (3 replies, 2 users)"
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage 編集済みメッセージを変換 1`] = `
+{
+  "markdown": 
+"**@U123456** - 2024-01-11 13:40:00
+
+Edited message
+
+*(edited by @U123456 at 2024-01-11 14:40:00)*"
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage 複数要素を含む複雑なメッセージを変換 1`] = `
+{
+  "markdown": 
+"**@U123456** - 2024-01-11 13:40:00
+
+Block content
+
+📎 **Attachment**
+
+**Attachment**
+
+Attachment text
+
+**image.png** (PNG, 2 KB)
+
+![image.png](https://files.slack.com/files-pri/T123456-F123456/image.png)
+
+**Reactions:** 👍 1"
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage コンテンツがない場合のエラーハンドリング 1`] = `
+{
+  "error": {
+    "code": "MISSING_CONTENT",
+    "details": {
+      "ts": "1704980400",
+      "type": "message",
+    },
+    "message": "No content to convert",
+  },
+  "success": false,
+}
+`;
+
+exports[`convertMultipleMessages 複数メッセージを順番に変換 1`] = `
+[
+  {
+    "markdown": 
+"**@U123456** - 2024-01-11 13:40:00
+
+First message"
+,
+    "success": true,
+  },
+  {
+    "markdown": 
+"**@U234567** - 2024-01-11 14:40:00
+
+Second message"
+,
+    "success": true,
+  },
+]
+`;
+
+exports[`convertMultipleMessages エラーメッセージも含めて処理 1`] = `
+[
+  {
+    "markdown": 
+"**@U123456** - 2024-01-11 13:40:00
+
+Valid message"
+,
+    "success": true,
+  },
+  {
+    "error": {
+      "code": "MISSING_CONTENT",
+      "details": {
+        "ts": "1704984000",
+        "type": "message",
+      },
+      "message": "No content to convert",
+    },
+    "success": false,
+  },
+]
+`;
+
+exports[`convertMultipleMessages 空の配列を処理 1`] = `[]`;
