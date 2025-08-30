@@ -17,15 +17,6 @@ export function parseAttachments(attachments: MessageAttachment[]): string {
 function parseAttachment(attachment: MessageAttachment): string {
   const parts: string[] = [];
 
-  // ヘッダー
-  parts.push("📎 **Attachment**");
-
-  // 色インジケーター
-  const color = formatAttachmentColor(attachment.color);
-  if (color) {
-    parts.push(color);
-  }
-
   // pretext
   if (attachment.pretext) {
     parts.push(formatMrkdwn(attachment.pretext));
@@ -86,7 +77,8 @@ function parseAttachment(attachment: MessageAttachment): string {
     parts.push(footerText);
   }
 
-  return parts.filter((part) => part.length > 0).join("\n\n");
+  const content = parts.filter((part) => part.length > 0).join("\n\n");
+  return `<attachment>\n${content}\n</attachment>`;
 }
 
 export function parseAttachmentFields(

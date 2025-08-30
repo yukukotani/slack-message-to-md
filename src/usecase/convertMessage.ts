@@ -82,7 +82,7 @@ export function convertMessage(message: SlackMessage): ConversionResult {
         "",
       );
       if (reactionsContent) {
-        sections.push(`**Reactions:** ${reactionsContent}`);
+        sections.push(reactionsContent);
       }
     }
 

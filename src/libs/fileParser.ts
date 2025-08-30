@@ -6,13 +6,7 @@ export function parseFiles(files: FileElement[]): string {
   }
 
   const parsedFiles = files.map((file) => {
-    if (isImageFile(file)) {
-      return formatImageFile(file);
-    } else if (isDocumentFile(file)) {
-      return formatDocumentFile(file);
-    } else {
-      return formatFileInfo(file);
-    }
+    return formatFileAsTag(file);
   });
 
   return parsedFiles.join("\n\n");
@@ -38,6 +32,16 @@ function isDocumentFile(file: FileElement): boolean {
   ];
 
   return documentTypes.some((type) => file.mimetype?.startsWith(type));
+}
+
+function formatFileAsTag(file: FileElement): string {
+  const id = file.id || "";
+  const mimetype = file.mimetype || "";
+  const href = file.url_private || "";
+  const size = file.size || 0;
+  const name = file.name || "file";
+
+  return `<file id="${id}" mimetype="${mimetype}" href="${href}" size="${size}">${name}</file>`;
 }
 
 export function formatImageFile(file: FileElement): string {

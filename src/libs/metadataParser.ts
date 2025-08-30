@@ -41,11 +41,11 @@ export function formatReactions(reactions?: Reaction[]): string {
   const reactionTexts = reactions
     .filter((reaction) => reaction.count > 0)
     .map((reaction) => {
-      const emoji = formatEmoji(`:${reaction.name}:`);
-      return `${emoji} ${reaction.count}`;
+      const users = reaction.users?.join(" ") || "";
+      return `<reaction count="${reaction.count}" users="${users}">${reaction.name}</reaction>`;
     });
 
-  return reactionTexts.join(" | ");
+  return reactionTexts.join("\n");
 }
 
 export function formatThreadInfo(message: SlackMessage): string {

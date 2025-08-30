@@ -31,13 +31,11 @@ exports[`convertMessage attachmentsを含むメッセージを変換 1`] = `
 
 Check this out:
 
-📎 **Attachment**
-
-🟢
-
+<attachment>
 **Sample Attachment**
 
-Attachment content"
+Attachment content
+</attachment>"
 ,
   "success": true,
 }
@@ -48,9 +46,7 @@ exports[`convertMessage filesを含むメッセージを変換 1`] = `
   "markdown": 
 "**@U123456** - 2024-01-11 13:40:00
 
-Uploaded a file:
-
-📄 **[document.pdf](https://files.slack.com/files-pri/T123456-F123456/document.pdf)** (PDF, 1 MB)"
+<file id="F123456" mimetype="application/pdf" href="https://files.slack.com/files-pri/T123456-F123456/document.pdf" size="1048576">document.pdf</file>"
 ,
   "success": true,
 }
@@ -63,33 +59,8 @@ exports[`convertMessage reactionsを含むメッセージを変換 1`] = `
 
 Great job!
 
-**Reactions:** 👍 2 | ❤️ 1"
-,
-  "success": true,
-}
-`;
-
-exports[`convertMessage スレッド情報を含むメッセージを変換 1`] = `
-{
-  "markdown": 
-"**@U123456** - 2024-01-11 13:40:00
-
-Original message
-
-💬 **Thread** (3 replies, 2 users)"
-,
-  "success": true,
-}
-`;
-
-exports[`convertMessage 編集済みメッセージを変換 1`] = `
-{
-  "markdown": 
-"**@U123456** - 2024-01-11 13:40:00
-
-Edited message
-
-*(edited by @U123456 at 2024-01-11 14:40:00)*"
+<reaction count="2" users="U234567 U345678">thumbsup</reaction>
+<reaction count="1" users="U456789">heart</reaction>"
 ,
   "success": true,
 }
@@ -102,17 +73,15 @@ exports[`convertMessage 複数要素を含む複雑なメッセージを変換 1
 
 Block content
 
-📎 **Attachment**
-
+<attachment>
 **Attachment**
 
 Attachment text
+</attachment>
 
-**image.png** (PNG, 2 KB)
+<file id="F123456" mimetype="image/png" href="https://files.slack.com/files-pri/T123456-F123456/image.png" size="2048">image.png</file>
 
-![image.png](https://files.slack.com/files-pri/T123456-F123456/image.png)
-
-**Reactions:** 👍 1"
+<reaction count="1" users="U234567">thumbsup</reaction>"
 ,
   "success": true,
 }

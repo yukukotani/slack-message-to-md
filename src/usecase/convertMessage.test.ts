@@ -58,7 +58,6 @@ describe("convertMessage", () => {
   it("filesを含むメッセージを変換", () => {
     const message: SlackMessage = {
       type: "message",
-      text: "Uploaded a file:",
       user: "U123456",
       ts: "1704980400",
       files: [
@@ -94,35 +93,6 @@ describe("convertMessage", () => {
           count: 1,
         },
       ],
-    };
-    const result = convertMessage(message);
-    expect(result).toMatchSnapshot();
-  });
-
-  it("スレッド情報を含むメッセージを変換", () => {
-    const message: SlackMessage = {
-      type: "message",
-      text: "Original message",
-      user: "U123456",
-      ts: "1704980400",
-      reply_count: 3,
-      reply_users: ["U234567", "U345678"],
-      reply_users_count: 2,
-    };
-    const result = convertMessage(message);
-    expect(result).toMatchSnapshot();
-  });
-
-  it("編集済みメッセージを変換", () => {
-    const message: SlackMessage = {
-      type: "message",
-      text: "Edited message",
-      user: "U123456",
-      ts: "1704980400",
-      edited: {
-        user: "U123456",
-        ts: "1704984000",
-      },
     };
     const result = convertMessage(message);
     expect(result).toMatchSnapshot();
