@@ -15,6 +15,7 @@ import {
 import { formatMrkdwn } from "../libs/textFormatter";
 import type { ConversionResult, SlackMessage } from "../libs/types";
 import { hasAttachments, hasBlocks, hasFiles } from "../libs/types";
+import { SlackMessageSchema } from "../libs/validation";
 
 export function convertMessage(message: SlackMessage): ConversionResult {
   try {
@@ -125,6 +126,25 @@ export function convertMultipleMessages(
   messages: SlackMessage[],
 ): ConversionResult[] {
   return messages.map((message) => convertMessage(message));
+}
+
+export function convertMessageWithValidation(
+  message: unknown,
+): ConversionResult {
+  const parseResult = SlackMessageSchema.safeParse(message);
+
+  if (!parseResult.success) {
+    return {
+      success: false,
+      error: {
+        code: "INVALID_JSON",
+        message: "メッセージの形式が正しくありません",
+        details: parseResult.error.format(),
+      },
+    };
+  }
+
+  return convertMessage(parseResult.data as SlackMessage);
 }
 
 function hasContent(message: SlackMessage): boolean {

@@ -12,28 +12,6 @@ export function parseFiles(files: FileElement[]): string {
   return parsedFiles.join("\n\n");
 }
 
-function isImageFile(file: FileElement): boolean {
-  return file.mimetype?.startsWith("image/") === true;
-}
-
-function isDocumentFile(file: FileElement): boolean {
-  if (!file.mimetype) return false;
-
-  const documentTypes = [
-    "application/pdf",
-    "text/plain",
-    "text/",
-    "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "application/vnd.ms-excel",
-    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    "application/vnd.ms-powerpoint",
-    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-  ];
-
-  return documentTypes.some((type) => file.mimetype?.startsWith(type));
-}
-
 function formatFileAsTag(file: FileElement): string {
   const id = file.id || "";
   const mimetype = file.mimetype || "";

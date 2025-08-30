@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import type { SlackMessage } from "../libs/types";
-import { convertMessage, convertMultipleMessages } from "./convertMessage";
+import {
+  convertMessage,
+  convertMessageWithValidation,
+  convertMultipleMessages,
+} from "./convertMessage";
 
 describe("convertMessage", () => {
   it("基本的なテキストメッセージを変換", () => {
@@ -188,5 +192,79 @@ describe("convertMultipleMessages", () => {
   it("空の配列を処理", () => {
     const results = convertMultipleMessages([]);
     expect(results).toMatchSnapshot();
+  });
+});
+
+describe("convertMessageWithValidation", () => {
+  it("有効なSlackMessageオブジェクトを処理", () => {
+    const message = {
+      type: "message",
+      text: "Hello *world*!",
+      user: "U123456",
+      ts: "1704980400",
+    };
+    const result = convertMessageWithValidation(message);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.markdown).toContain("Hello **world**!");
+    }
+  });
+
+  it("無効なオブジェクトでバリデーションエラー", () => {
+    const invalidMessage = {
+      type: "message",
+      ts: 12345, // 文字列でなく数値
+    };
+    const result = convertMessageWithValidation(invalidMessage);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.code).toBe("INVALID_JSON");
+      expect(result.error.message).toBe("メッセージの形式が正しくありません");
+    }
+  });
+
+  it("nullでバリデーションエラー", () => {
+    const result = convertMessageWithValidation(null);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.code).toBe("INVALID_JSON");
+    }
+  });
+
+  it("undefinedでバリデーションエラー", () => {
+    const result = convertMessageWithValidation(undefined);
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.code).toBe("INVALID_JSON");
+    }
+  });
+
+  it("文字列でバリデーションエラー", () => {
+    const result = convertMessageWithValidation("invalid");
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.code).toBe("INVALID_JSON");
+    }
+  });
+
+  it("配列型のreactionsを正しく処理", () => {
+    const message = {
+      type: "message",
+      text: "Hello!",
+      user: "U123456",
+      ts: "1704980400",
+      reactions: [
+        {
+          name: "smile",
+          users: ["U234567"],
+          count: 1,
+        },
+      ],
+    };
+    const result = convertMessageWithValidation(message);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.markdown).toContain("smile");
+    }
   });
 });

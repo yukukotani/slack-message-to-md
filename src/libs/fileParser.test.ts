@@ -183,7 +183,9 @@ describe("parseFiles", () => {
       },
     ];
     const result = parseFiles(files);
-    expect(result).toBe('<file id="F123456" mimetype="image/jpeg" href="https://files.slack.com/files-pri/T123456-F123456/photo.jpg" size="2048000">photo.jpg</file>');
+    expect(result).toBe(
+      '<file id="F123456" mimetype="image/jpeg" href="https://files.slack.com/files-pri/T123456-F123456/photo.jpg" size="2048000">photo.jpg</file>',
+    );
   });
 
   it("ドキュメントファイルはリンクとして表示", () => {
@@ -199,7 +201,9 @@ describe("parseFiles", () => {
       },
     ];
     const result = parseFiles(files);
-    expect(result).toBe('<file id="F123456" mimetype="application/vnd.openxmlformats-officedocument.presentationml.presentation" href="https://files.slack.com/files-pri/T123456-F123456/presentation.pptx" size="5242880">presentation.pptx</file>');
+    expect(result).toBe(
+      '<file id="F123456" mimetype="application/vnd.openxmlformats-officedocument.presentationml.presentation" href="https://files.slack.com/files-pri/T123456-F123456/presentation.pptx" size="5242880">presentation.pptx</file>',
+    );
   });
 
   it("複数ファイルを順番に処理", () => {
@@ -222,8 +226,12 @@ describe("parseFiles", () => {
       },
     ];
     const result = parseFiles(files);
-    expect(result).toContain('<file id="F123456" mimetype="image/png" href="https://files.slack.com/files-pri/T123456-F123456/image.png" size="1024">image.png</file>');
-    expect(result).toContain('<file id="F234567" mimetype="application/pdf" href="https://files.slack.com/files-pri/T123456-F234567/document.pdf" size="2048">document.pdf</file>');
+    expect(result).toContain(
+      '<file id="F123456" mimetype="image/png" href="https://files.slack.com/files-pri/T123456-F123456/image.png" size="1024">image.png</file>',
+    );
+    expect(result).toContain(
+      '<file id="F234567" mimetype="application/pdf" href="https://files.slack.com/files-pri/T123456-F234567/document.pdf" size="2048">document.pdf</file>',
+    );
     // 2つのファイルが区切り線で分かれている
     expect(result.split("\n\n").length).toBeGreaterThan(1);
   });
