@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { SlackMessage, TestBlock } from "../libs/types";
+import type { SlackMessage } from "../libs/types";
 import { convertMessage, convertMultipleMessages } from "./convertMessage";
 
 describe("convertMessage", () => {
@@ -35,7 +35,7 @@ describe("convertMessage", () => {
             text: "This is a *section* with formatting.",
           },
         },
-      ] as TestBlock[],
+      ],
     };
     const result = convertMessage(message);
     expect(result.success).toBe(true);
@@ -171,7 +171,7 @@ describe("convertMessage", () => {
         {
           type: "section",
           text: { type: "plain_text", text: "Block content" },
-        } as TestBlock,
+        },
       ],
       attachments: [
         {
