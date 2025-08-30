@@ -35,8 +35,14 @@ This is a TypeScript template for a project for Coding AI Agent.
 
 - Language: TypeScript
 - Package Manager: bun
-- Test: vitest, power-assert-monorepo
+- Test: vitest
 - Linter, Formatter: Biome
+
+## Development Commands
+
+- `bun run build`: Build the project.
+- `bun run lint`: Run linter.
+- `bun run test`: Run tests.
 
 ## Directory Structure
 
