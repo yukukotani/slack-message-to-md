@@ -60,8 +60,9 @@ export function wrapSafeExecution<T>(fn: () => T, fallback: T): T {
 }
 
 export function createUnknownError(error: unknown): ConversionResult {
-  const errorMessage = error instanceof Error ? error.message : "Unknown error occurred";
-  
+  const errorMessage =
+    error instanceof Error ? error.message : "Unknown error occurred";
+
   return {
     success: false,
     error: {

@@ -19,6 +19,26 @@ import type {
   SectionBlock,
 } from "@slack/types";
 
+// テスト用の型定義（Slack SDKで不足している型を補完）
+export type TestBlock =
+  | HeaderBlock
+  | SectionBlock
+  | DividerBlock
+  | ImageBlock
+  | ActionsBlock
+  | ContextBlock
+  | RichTextBlock
+  | InputBlock
+  | FileBlock
+  | {
+      type: "header";
+      text: { type: "plain_text"; text: string };
+    }
+  | {
+      type: "section";
+      text: { type: "mrkdwn" | "plain_text"; text: string };
+    };
+
 export type FileElement = {
   id?: string;
   created?: number;

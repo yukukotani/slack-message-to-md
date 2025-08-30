@@ -1,0 +1,140 @@
+import { parseAttachments } from "../libs/attachmentParser";
+import { parseBlocks } from "../libs/blockParser";
+import {
+  createUnknownError,
+  handleMissingContent,
+  wrapSafeExecution,
+} from "../libs/errorHandler";
+import { parseFiles } from "../libs/fileParser";
+import {
+  formatEditedInfo,
+  formatReactions,
+  formatThreadInfo,
+  formatUserHeader,
+} from "../libs/metadataParser";
+import { formatMrkdwn } from "../libs/textFormatter";
+import type { ConversionResult, SlackMessage } from "../libs/types";
+import { hasAttachments, hasBlocks, hasFiles } from "../libs/types";
+
+export function convertMessage(message: SlackMessage): ConversionResult {
+  try {
+    // コンテンツがあるかチェック
+    if (!hasContent(message)) {
+      return handleMissingContent(message);
+    }
+
+    const sections: string[] = [];
+
+    // 1. ヘッダー（ユーザー + タイムスタンプ）
+    const header = wrapSafeExecution(
+      () => formatUserHeader(message.user, message.ts),
+      "",
+    );
+    if (header) {
+      sections.push(header);
+    }
+
+    // 2. メインコンテンツ（blocks が優先、なければ text）
+    if (hasBlocks(message)) {
+      const blocksContent = wrapSafeExecution(
+        () => parseBlocks(message.blocks),
+        "",
+      );
+      if (blocksContent) {
+        sections.push(blocksContent);
+      }
+    } else if (message.text) {
+      const textContent = wrapSafeExecution(
+        () => formatMrkdwn(message.text || ""),
+        message.text || "",
+      );
+      if (textContent) {
+        sections.push(textContent);
+      }
+    }
+
+    // 3. アタッチメント
+    if (hasAttachments(message)) {
+      const attachmentContent = wrapSafeExecution(
+        () => parseAttachments(message.attachments),
+        "",
+      );
+      if (attachmentContent) {
+        sections.push(attachmentContent);
+      }
+    }
+
+    // 4. ファイル
+    if (hasFiles(message)) {
+      const fileContent = wrapSafeExecution(
+        () => parseFiles(message.files),
+        "",
+      );
+      if (fileContent) {
+        sections.push(fileContent);
+      }
+    }
+
+    // 5. リアクション
+    if (message.reactions && message.reactions.length > 0) {
+      const reactionsContent = wrapSafeExecution(
+        () => formatReactions(message.reactions),
+        "",
+      );
+      if (reactionsContent) {
+        sections.push(`**Reactions:** ${reactionsContent}`);
+      }
+    }
+
+    // 6. スレッド情報
+    const threadInfo = wrapSafeExecution(() => formatThreadInfo(message), "");
+    if (threadInfo) {
+      sections.push(threadInfo);
+    }
+
+    // 7. 編集情報
+    if (message.edited) {
+      const editedInfo = wrapSafeExecution(
+        () => formatEditedInfo(message.edited),
+        "",
+      );
+      if (editedInfo) {
+        sections.push(editedInfo);
+      }
+    }
+
+    // 結合
+    const markdown = sections
+      .filter((section) => section.length > 0)
+      .join("\n\n");
+
+    if (markdown.length === 0) {
+      return handleMissingContent(message);
+    }
+
+    return {
+      success: true,
+      markdown,
+    };
+  } catch (error) {
+    return createUnknownError(error);
+  }
+}
+
+export function convertMultipleMessages(
+  messages: SlackMessage[],
+): ConversionResult[] {
+  return messages.map((message) => convertMessage(message));
+}
+
+function hasContent(message: SlackMessage): boolean {
+  return !!(
+    message.text ||
+    hasBlocks(message) ||
+    hasAttachments(message) ||
+    hasFiles(message) ||
+    (message.reactions && message.reactions.length > 0) ||
+    message.reply_count ||
+    message.edited
+  );
+}

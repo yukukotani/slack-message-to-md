@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import type { EditedInfo, Reaction, SlackMessage } from "./types";
 import {
   formatEditedInfo,
   formatReactions,
@@ -7,6 +6,7 @@ import {
   formatTimestamp,
   formatUserHeader,
 } from "./metadataParser";
+import type { EditedInfo, Reaction, SlackMessage } from "./types";
 
 describe("formatTimestamp", () => {
   it("Unixタイムスタンプを日時文字列に変換", () => {
@@ -42,7 +42,9 @@ describe("formatUserHeader", () => {
   });
 
   it("タイムスタンプのみの場合", () => {
-    expect(formatUserHeader(undefined, "1704980400")).toBe("2024-01-11 13:40:00");
+    expect(formatUserHeader(undefined, "1704980400")).toBe(
+      "2024-01-11 13:40:00",
+    );
   });
 
   it("両方とも未定義の場合", () => {
@@ -123,7 +125,9 @@ describe("formatThreadInfo", () => {
       reply_users_count: 2,
       latest_reply: "1704984000",
     };
-    expect(formatThreadInfo(message)).toBe("💬 **Thread** (5 replies, 2 users)");
+    expect(formatThreadInfo(message)).toBe(
+      "💬 **Thread** (5 replies, 2 users)",
+    );
   });
 
   it("スレッドの返信メッセージ", () => {
@@ -168,7 +172,9 @@ describe("formatEditedInfo", () => {
       user: "U123456",
       ts: "1704984000",
     };
-    expect(formatEditedInfo(edited)).toBe("*(edited by @U123456 at 2024-01-11 14:40:00)*");
+    expect(formatEditedInfo(edited)).toBe(
+      "*(edited by @U123456 at 2024-01-11 14:40:00)*",
+    );
   });
 
   it("編集ユーザーのみの場合", () => {
@@ -196,6 +202,6 @@ describe("formatEditedInfo", () => {
   });
 
   it("未定義の場合", () => {
-    expect(formatEditedInfo(undefined as any)).toBe("");
+    expect(formatEditedInfo(undefined as never)).toBe("");
   });
 });

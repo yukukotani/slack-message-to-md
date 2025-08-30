@@ -142,7 +142,7 @@ export function formatAttachmentColor(color?: string): string {
 export function formatAttachmentAuthor(
   author_name?: string,
   author_link?: string,
-  author_icon?: string,
+  _author_icon?: string,
 ): string {
   if (!author_name) {
     return "";
@@ -157,7 +157,7 @@ export function formatAttachmentAuthor(
 
 export function formatAttachmentFooter(
   footer?: string,
-  footer_icon?: string,
+  _footer_icon?: string,
   ts?: number,
 ): string {
   const parts: string[] = [];

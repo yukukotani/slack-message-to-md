@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import type { ConversionError, SlackMessage } from "./types";
 import {
   handleInvalidJson,
   handleMissingContent,
   handlePartialConversion,
   wrapSafeExecution,
 } from "./errorHandler";
+import type { SlackMessage } from "./types";
 
 describe("handleInvalidJson", () => {
   it("JSONパースエラーのエラーレスポンスを生成", () => {
@@ -92,9 +92,7 @@ describe("wrapSafeExecution", () => {
   });
 
   it("Promise を返す関数はフォールバック値を返す", () => {
-    const fn = () => {
-      return Promise.resolve("async result");
-    };
+    const fn = () => Promise.resolve("async result") as unknown as string;
     const fallback = "fallback value";
     const result = wrapSafeExecution(fn, fallback);
     expect(result).toBe("fallback value");

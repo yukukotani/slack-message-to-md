@@ -24,7 +24,7 @@ function isImageFile(file: FileElement): boolean {
 
 function isDocumentFile(file: FileElement): boolean {
   if (!file.mimetype) return false;
-  
+
   const documentTypes = [
     "application/pdf",
     "text/plain",
@@ -36,7 +36,7 @@ function isDocumentFile(file: FileElement): boolean {
     "application/vnd.ms-powerpoint",
     "application/vnd.openxmlformats-officedocument.presentationml.presentation",
   ];
-  
+
   return documentTypes.some((type) => file.mimetype?.startsWith(type));
 }
 
@@ -127,11 +127,13 @@ function getFileTypeFromMimetype(mimetype?: string): string {
     "application/x-rar-compressed": "RAR",
     "application/x-7z-compressed": "7Z",
     "application/msword": "DOC",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "DOCX",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      "DOCX",
     "application/vnd.ms-excel": "XLS",
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "XLSX",
     "application/vnd.ms-powerpoint": "PPT",
-    "application/vnd.openxmlformats-officedocument.presentationml.presentation": "PPTX",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+      "PPTX",
     "audio/mpeg": "MP3",
     "audio/wav": "WAV",
     "video/mp4": "MP4",

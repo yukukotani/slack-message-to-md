@@ -14,9 +14,9 @@ describe("formatAttachmentAuthor", () => {
   });
 
   it("作成者名とリンクがある場合", () => {
-    expect(
-      formatAttachmentAuthor("John Doe", "https://example.com/john"),
-    ).toBe("[John Doe](https://example.com/john)");
+    expect(formatAttachmentAuthor("John Doe", "https://example.com/john")).toBe(
+      "[John Doe](https://example.com/john)",
+    );
   });
 
   it("作成者名、リンク、アイコンがある場合", () => {
@@ -94,14 +94,22 @@ describe("parseAttachmentFields", () => {
       { title: "Priority", value: "High", short: true },
       { title: "Status", value: "Open", short: true },
     ];
-    expect(parseAttachmentFields(fields)).toBe("| Priority | High |\n| Status | Open |");
+    expect(parseAttachmentFields(fields)).toBe(
+      "| Priority | High |\n| Status | Open |",
+    );
   });
 
   it("長いフィールドを通常のテキストで表示", () => {
     const fields = [
-      { title: "Description", value: "This is a long description", short: false },
+      {
+        title: "Description",
+        value: "This is a long description",
+        short: false,
+      },
     ];
-    expect(parseAttachmentFields(fields)).toBe("**Description**\nThis is a long description");
+    expect(parseAttachmentFields(fields)).toBe(
+      "**Description**\nThis is a long description",
+    );
   });
 
   it("混在するフィールドを適切に表示", () => {

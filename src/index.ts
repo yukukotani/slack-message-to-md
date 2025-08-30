@@ -1,7 +1,10 @@
-import { handleCli } from "./presentation/cli.js";
+// プログラマティックAPI
 
-const main = (): void => {
-  handleCli();
-};
-
-main();
+export { handleInvalidJson, handleMissingContent } from "./libs/errorHandler";
+export type { ConversionResult, FileElement, SlackMessage } from "./libs/types";
+// CLI
+export { handleCli } from "./presentation/cli";
+export {
+  convertMessage,
+  convertMultipleMessages,
+} from "./usecase/convertMessage";

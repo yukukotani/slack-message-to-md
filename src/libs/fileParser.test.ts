@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import type { FileElement } from "./types";
 import {
   formatDocumentFile,
   formatFileInfo,
@@ -7,6 +6,7 @@ import {
   formatImageFile,
   parseFiles,
 } from "./fileParser";
+import type { FileElement } from "./types";
 
 describe("formatFileSize", () => {
   it("バイト単位の場合", () => {
@@ -41,11 +41,14 @@ describe("formatImageFile", () => {
       id: "F123456",
       name: "sample.png",
       mimetype: "image/png",
-      url_private: "https://files.slack.com/files-pri/T123456-F123456/sample.png",
+      url_private:
+        "https://files.slack.com/files-pri/T123456-F123456/sample.png",
       size: 2048,
     };
     const result = formatImageFile(file);
-    expect(result).toContain("![sample.png](https://files.slack.com/files-pri/T123456-F123456/sample.png)");
+    expect(result).toContain(
+      "![sample.png](https://files.slack.com/files-pri/T123456-F123456/sample.png)",
+    );
     expect(result).toContain("**sample.png** (PNG, 2 KB)");
   });
 
@@ -55,12 +58,15 @@ describe("formatImageFile", () => {
       name: "image.jpg",
       title: "サンプル画像",
       mimetype: "image/jpeg",
-      url_private: "https://files.slack.com/files-pri/T123456-F123456/image.jpg",
+      url_private:
+        "https://files.slack.com/files-pri/T123456-F123456/image.jpg",
       size: 1536000,
     };
     const result = formatImageFile(file);
     expect(result).toContain("**サンプル画像** (JPEG, 1.5 MB)");
-    expect(result).toContain("![サンプル画像](https://files.slack.com/files-pri/T123456-F123456/image.jpg)");
+    expect(result).toContain(
+      "![サンプル画像](https://files.slack.com/files-pri/T123456-F123456/image.jpg)",
+    );
   });
 
   it("サムネイル付き画像ファイル", () => {
@@ -68,13 +74,17 @@ describe("formatImageFile", () => {
       id: "F123456",
       name: "large.png",
       mimetype: "image/png",
-      url_private: "https://files.slack.com/files-pri/T123456-F123456/large.png",
-      thumb_360: "https://files.slack.com/files-tmb/T123456-F123456-thumb360/large.png",
+      url_private:
+        "https://files.slack.com/files-pri/T123456-F123456/large.png",
+      thumb_360:
+        "https://files.slack.com/files-tmb/T123456-F123456-thumb360/large.png",
       size: 5242880,
     };
     const result = formatImageFile(file);
     // サムネイルを優先
-    expect(result).toContain("![large.png](https://files.slack.com/files-tmb/T123456-F123456-thumb360/large.png)");
+    expect(result).toContain(
+      "![large.png](https://files.slack.com/files-tmb/T123456-F123456-thumb360/large.png)",
+    );
   });
 });
 
@@ -84,11 +94,14 @@ describe("formatDocumentFile", () => {
       id: "F123456",
       name: "document.pdf",
       mimetype: "application/pdf",
-      url_private: "https://files.slack.com/files-pri/T123456-F123456/document.pdf",
+      url_private:
+        "https://files.slack.com/files-pri/T123456-F123456/document.pdf",
       size: 1048576,
     };
     const result = formatDocumentFile(file);
-    expect(result).toBe("📄 **[document.pdf](https://files.slack.com/files-pri/T123456-F123456/document.pdf)** (PDF, 1 MB)");
+    expect(result).toBe(
+      "📄 **[document.pdf](https://files.slack.com/files-pri/T123456-F123456/document.pdf)** (PDF, 1 MB)",
+    );
   });
 
   it("テキストファイル", () => {
@@ -96,11 +109,14 @@ describe("formatDocumentFile", () => {
       id: "F123456",
       name: "readme.txt",
       mimetype: "text/plain",
-      url_private: "https://files.slack.com/files-pri/T123456-F123456/readme.txt",
+      url_private:
+        "https://files.slack.com/files-pri/T123456-F123456/readme.txt",
       size: 1024,
     };
     const result = formatDocumentFile(file);
-    expect(result).toBe("📄 **[readme.txt](https://files.slack.com/files-pri/T123456-F123456/readme.txt)** (TXT, 1 KB)");
+    expect(result).toBe(
+      "📄 **[readme.txt](https://files.slack.com/files-pri/T123456-F123456/readme.txt)** (TXT, 1 KB)",
+    );
   });
 
   it("タイトル付きドキュメント", () => {
@@ -108,12 +124,16 @@ describe("formatDocumentFile", () => {
       id: "F123456",
       name: "report.docx",
       title: "月次レポート",
-      mimetype: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      url_private: "https://files.slack.com/files-pri/T123456-F123456/report.docx",
+      mimetype:
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      url_private:
+        "https://files.slack.com/files-pri/T123456-F123456/report.docx",
       size: 512000,
     };
     const result = formatDocumentFile(file);
-    expect(result).toBe("📄 **[月次レポート](https://files.slack.com/files-pri/T123456-F123456/report.docx)** (DOCX, 500 KB)");
+    expect(result).toBe(
+      "📄 **[月次レポート](https://files.slack.com/files-pri/T123456-F123456/report.docx)** (DOCX, 500 KB)",
+    );
   });
 });
 
@@ -123,11 +143,14 @@ describe("formatFileInfo", () => {
       id: "F123456",
       name: "archive.zip",
       mimetype: "application/zip",
-      url_private: "https://files.slack.com/files-pri/T123456-F123456/archive.zip",
+      url_private:
+        "https://files.slack.com/files-pri/T123456-F123456/archive.zip",
       size: 10485760,
     };
     const result = formatFileInfo(file);
-    expect(result).toBe("📎 **[archive.zip](https://files.slack.com/files-pri/T123456-F123456/archive.zip)** (ZIP, 10 MB)");
+    expect(result).toBe(
+      "📎 **[archive.zip](https://files.slack.com/files-pri/T123456-F123456/archive.zip)** (ZIP, 10 MB)",
+    );
   });
 
   it("外部ファイルの場合", () => {
@@ -140,7 +163,9 @@ describe("formatFileInfo", () => {
       size: 0,
     };
     const result = formatFileInfo(file);
-    expect(result).toContain("**[external.pdf](https://docs.google.com/document/d/123456/edit)**");
+    expect(result).toContain(
+      "**[external.pdf](https://docs.google.com/document/d/123456/edit)**",
+    );
     expect(result).toContain("External (gdoc)");
   });
 });
@@ -152,7 +177,8 @@ describe("parseFiles", () => {
         id: "F123456",
         name: "photo.jpg",
         mimetype: "image/jpeg",
-        url_private: "https://files.slack.com/files-pri/T123456-F123456/photo.jpg",
+        url_private:
+          "https://files.slack.com/files-pri/T123456-F123456/photo.jpg",
         size: 2048000,
       },
     ];
@@ -166,8 +192,10 @@ describe("parseFiles", () => {
       {
         id: "F123456",
         name: "presentation.pptx",
-        mimetype: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-        url_private: "https://files.slack.com/files-pri/T123456-F123456/presentation.pptx",
+        mimetype:
+          "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        url_private:
+          "https://files.slack.com/files-pri/T123456-F123456/presentation.pptx",
         size: 5242880,
       },
     ];
@@ -182,14 +210,16 @@ describe("parseFiles", () => {
         id: "F123456",
         name: "image.png",
         mimetype: "image/png",
-        url_private: "https://files.slack.com/files-pri/T123456-F123456/image.png",
+        url_private:
+          "https://files.slack.com/files-pri/T123456-F123456/image.png",
         size: 1024,
       },
       {
         id: "F234567",
         name: "document.pdf",
         mimetype: "application/pdf",
-        url_private: "https://files.slack.com/files-pri/T123456-F234567/document.pdf",
+        url_private:
+          "https://files.slack.com/files-pri/T123456-F234567/document.pdf",
         size: 2048,
       },
     ];
@@ -205,6 +235,6 @@ describe("parseFiles", () => {
   });
 
   it("未定義の場合", () => {
-    expect(parseFiles(undefined as any)).toBe("");
+    expect(parseFiles(undefined as never)).toBe("");
   });
 });

@@ -1,5 +1,5 @@
-import type { EditedInfo, Reaction, SlackMessage } from "./types";
 import { formatEmoji } from "./textFormatter";
+import type { EditedInfo, Reaction, SlackMessage } from "./types";
 
 export function formatUserHeader(user?: string, timestamp?: string): string {
   const parts: string[] = [];
