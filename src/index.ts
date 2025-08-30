@@ -6,5 +6,6 @@ export type { ConversionResult, FileElement, SlackMessage } from "./libs/types";
 export { handleCli } from "./presentation/cli";
 export {
   convertMessage,
+  convertMessageWithValidation,
   convertMultipleMessages,
 } from "./usecase/convertMessage";

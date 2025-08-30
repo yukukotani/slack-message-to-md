@@ -94,13 +94,13 @@ export type ConversionResult =
   | { success: true; markdown: string }
   | { success: false; error: ConversionError; partialMarkdown?: string };
 
-export type ConversionError = {
+type ConversionError = {
   code: ErrorCode;
   message: string;
   details?: unknown;
 };
 
-export type ErrorCode =
+type ErrorCode =
   | "INVALID_JSON"
   | "MISSING_CONTENT"
   | "PARTIAL_CONVERSION"
@@ -117,7 +117,7 @@ export type EditedInfo = {
   ts: string;
 };
 
-export function isSlackMessage(obj: unknown): obj is SlackMessage {
+function isSlackMessage(obj: unknown): obj is SlackMessage {
   return typeof obj === "object" && obj !== null && "type" in obj;
 }
 
@@ -171,7 +171,7 @@ export function isInputBlock(block: Block): block is InputBlock {
   return block.type === "input";
 }
 
-export function isFileBlock(block: Block): block is FileBlock {
+function isFileBlock(block: Block): block is FileBlock {
   return block.type === "file";
 }
 

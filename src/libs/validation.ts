@@ -1,17 +1,17 @@
 import { z } from "zod";
 
-export const ReactionSchema = z.object({
+const ReactionSchema = z.object({
   name: z.string(),
   users: z.array(z.string()),
   count: z.number(),
 });
 
-export const EditedInfoSchema = z.object({
+const EditedInfoSchema = z.object({
   user: z.string(),
   ts: z.string(),
 });
 
-export const FileElementSchema = z.object({
+const FileElementSchema = z.object({
   id: z.string().optional(),
   created: z.number().optional(),
   timestamp: z.number().optional(),
@@ -81,4 +81,4 @@ export const SlackMessageSchema = z.object({
   parent_user_id: z.string().optional(),
 });
 
-export type SlackMessageInput = z.infer<typeof SlackMessageSchema>;
+type SlackMessageInput = z.infer<typeof SlackMessageSchema>;

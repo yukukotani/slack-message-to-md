@@ -257,7 +257,7 @@ export function parseImageBlock(block: ImageBlock): string {
   return parts.join("\n");
 }
 
-export function parseActionsBlock(block: ActionsBlock): string {
+function parseActionsBlock(block: ActionsBlock): string {
   // アクションブロックは通常インタラクティブな要素なので、
   // Markdownでは表現が難しい。要素の説明のみ表示
   const elements = block.elements || [];
@@ -291,7 +291,7 @@ export function parseActionsBlock(block: ActionsBlock): string {
   return descriptions.length > 0 ? descriptions.join(" ") : "";
 }
 
-export function parseInputBlock(block: InputBlock): string {
+function parseInputBlock(block: InputBlock): string {
   const label = block.label?.text || "";
   const hint = block.hint?.text || "";
   const optional = block.optional ? " (optional)" : "";
