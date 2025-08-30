@@ -82,25 +82,25 @@ describe("formatMrkdwn", () => {
 
   it("コードブロックの前にテキストがある場合", () => {
     const input = "以下のコードを確認してください:\n```\nfunction hello() {\n  console.log('hello');\n}\n```";
-    const expected = "以下のコードを確認してください:\n```\nfunction hello() {\n  console.log('hello');\n}\n```";
+    const expected = "以下のコードを確認してください:\n\n```\nfunction hello() {\n  console.log('hello');\n}\n```";
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
   it("コードブロックの後にテキストがある場合", () => {
     const input = "```\nfunction hello() {\n  console.log('hello');\n}\n```\nこのコードは挨拶を出力します。";
-    const expected = "```\nfunction hello() {\n  console.log('hello');\n}\n```\nこのコードは挨拶を出力します。";
+    const expected = "```\nfunction hello() {\n  console.log('hello');\n}\n```\n\nこのコードは挨拶を出力します。";
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
   it("コードブロックの前後にテキストがある場合", () => {
     const input = "サンプルコード:\n```\nconst name = 'World';\nconsole.log(`Hello, ${name}!`);\n```\n実行すると\"Hello, World!\"が表示されます。";
-    const expected = "サンプルコード:\n```\nconst name = 'World';\nconsole.log(`Hello, ${name}!`);\n```\n実行すると\"Hello, World!\"が表示されます。";
+    const expected = "サンプルコード:\n\n```\nconst name = 'World';\nconsole.log(`Hello, ${name}!`);\n```\n\n実行すると\"Hello, World!\"が表示されます。";
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
   it("コードブロックの前後にフォーマット済みテキストがある場合", () => {
     const input = "*重要*: 以下のコードを参照してください:\n```\nif (condition) {\n  return true;\n}\n```\n_注意_: このコードは<https://example.com|公式ドキュメント>から引用しました。";
-    const expected = "**重要**: 以下のコードを参照してください:\n```\nif (condition) {\n  return true;\n}\n```\n*注意*: このコードは[公式ドキュメント](https://example.com)から引用しました。";
+    const expected = "**重要**: 以下のコードを参照してください:\n\n```\nif (condition) {\n  return true;\n}\n```\n\n*注意*: このコードは[公式ドキュメント](https://example.com)から引用しました。";
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
@@ -118,7 +118,7 @@ describe("formatMrkdwn", () => {
 
   it("複数のコードブロックが混在する場合", () => {
     const input = "最初の例:\n```\nfunction a() {\n  return 1;\n}\n```\n次の例:\n```\nfunction b() {\n  return 2;\n}\n```\n以上です。";
-    const expected = "最初の例:\n```\nfunction a() {\n  return 1;\n}\n```\n次の例:\n```\nfunction b() {\n  return 2;\n}\n```\n以上です。";
+    const expected = "最初の例:\n\n```\nfunction a() {\n  return 1;\n}\n```\n\n次の例:\n\n```\nfunction b() {\n  return 2;\n}\n```\n\n以上です。";
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
