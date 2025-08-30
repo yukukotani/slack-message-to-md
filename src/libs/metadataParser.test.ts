@@ -61,7 +61,7 @@ describe("formatReactions", () => {
         count: 2,
       },
     ];
-    expect(formatReactions(reactions)).toBe("👍 2");
+    expect(formatReactions(reactions)).toBe('<reaction count="2" users="U123456 U234567">thumbsup</reaction>');
   });
 
   it("複数のリアクション", () => {
@@ -77,7 +77,7 @@ describe("formatReactions", () => {
         count: 2,
       },
     ];
-    expect(formatReactions(reactions)).toBe("👍 1 | ❤️ 2");
+    expect(formatReactions(reactions)).toBe('<reaction count="1" users="U123456">thumbsup</reaction>\n<reaction count="2" users="U234567 U345678">heart</reaction>');
   });
 
   it("未知の絵文字名はそのまま表示", () => {
@@ -88,7 +88,7 @@ describe("formatReactions", () => {
         count: 1,
       },
     ];
-    expect(formatReactions(reactions)).toBe(":custom-emoji: 1");
+    expect(formatReactions(reactions)).toBe('<reaction count="1" users="U123456">custom-emoji</reaction>');
   });
 
   it("countが0の場合は表示しない", () => {
@@ -104,7 +104,7 @@ describe("formatReactions", () => {
         count: 1,
       },
     ];
-    expect(formatReactions(reactions)).toBe("❤️ 1");
+    expect(formatReactions(reactions)).toBe('<reaction count="1" users="U123456">heart</reaction>');
   });
 
   it("空の配列の場合", () => {

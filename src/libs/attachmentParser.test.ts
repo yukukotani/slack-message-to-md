@@ -138,10 +138,10 @@ describe("parseAttachments", () => {
       },
     ];
     const result = parseAttachments(attachments);
-    expect(result).toContain("📎 **Attachment**");
-    expect(result).toContain("🟢");
+    expect(result).toContain("<attachment>");
     expect(result).toContain("**Test Attachment**");
     expect(result).toContain("This is attachment text");
+    expect(result).toContain("</attachment>");
   });
 
   it("リンク付きタイトルのアタッチメントを変換", () => {
