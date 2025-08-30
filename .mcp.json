@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "lsmcp": {
+      "type": "stdio",
+      "command": "bunx",
+      "args": [
+        "@mizchi/lsmcp",
+        "-p",
+        "tsgo"
+      ],
+      "env": {}
+    },
+    "byethrow": {
+      "type": "stdio",
+      "command": "bunx",
+      "args": [
+        "@praha/byethrow-mcp"
+      ],
+      "env": {}
+    }
+  }
+}

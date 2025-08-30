@@ -24,7 +24,7 @@ This is a TypeScript template for a project for Coding AI Agent.
 ### Functional Programming
 
 - You MUST use function instead of class.
-- You MUST use tagged union to represent errors instead of throwing errors.
+- You MUST use Result types provided by `@praha/byethrow` to represent errors instead of throwing errors.
 
 ### Comment
 

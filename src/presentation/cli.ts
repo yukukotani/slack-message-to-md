@@ -1,4 +1,5 @@
 import { parseArgs as utilParseArgs } from "node:util";
+import { R } from "@praha/byethrow";
 import { calculate } from "../usecase/calculator.js";
 
 export const handleCli = (): void => {
@@ -29,7 +30,7 @@ export const handleCli = (): void => {
 
   const result = calculate(operation, num1, num2);
 
-  if (result.success) {
+  if (R.isSuccess(result)) {
     console.log(`Result: ${result.value}`);
     process.exit(0);
   } else {

@@ -1,31 +1,28 @@
+import { R } from "@praha/byethrow";
 import { add } from "../libs/add.js";
-
-type CalculationResult =
-  | { success: true; value: number }
-  | { success: false; error: string };
 
 export const calculate = (
   operation: string,
   a: number,
   b: number,
-): CalculationResult => {
+): R.Result<number, string> => {
   switch (operation) {
     case "add":
     case "+":
-      return { success: true, value: add(a, b) };
+      return R.succeed(add(a, b));
     case "subtract":
     case "-":
-      return { success: true, value: a - b };
+      return R.succeed(a - b);
     case "multiply":
     case "*":
-      return { success: true, value: a * b };
+      return R.succeed(a * b);
     case "divide":
     case "/":
       if (b === 0) {
-        return { success: false, error: "Division by zero is not allowed" };
+        return R.fail("Division by zero is not allowed");
       }
-      return { success: true, value: a / b };
+      return R.succeed(a / b);
     default:
-      return { success: false, error: `Unknown operation: ${operation}` };
+      return R.fail(`Unknown operation: ${operation}`);
   }
 };

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "lsmcp": {
+      "type": "local",
+      "command": ["bun","x","@mizchi/lsmcp", "-p", "tsgo"],
+      "enabled": true
+    },
+    "byethrow": {
+      "type": "local",
+      "command": ["bun","x","@praha/byethrow-mcp"],
+      "enabled": true
+    }
+  }
+}

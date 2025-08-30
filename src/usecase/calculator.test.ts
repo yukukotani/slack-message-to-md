@@ -1,11 +1,12 @@
+import { R } from "@praha/byethrow";
 import { assert, test } from "vitest";
 import { calculate } from "./calculator.js";
 
 test("calculate関数の加算テスト", () => {
   const result = calculate("add", 5, 3);
 
-  assert(result.success === true);
-  if (result.success) {
+  assert(R.isSuccess(result));
+  if (R.isSuccess(result)) {
     assert(result.value === 8);
   }
 });
@@ -13,8 +14,8 @@ test("calculate関数の加算テスト", () => {
 test("calculate関数の減算テスト", () => {
   const result = calculate("subtract", 10, 4);
 
-  assert(result.success === true);
-  if (result.success) {
+  assert(R.isSuccess(result));
+  if (R.isSuccess(result)) {
     assert(result.value === 6);
   }
 });
@@ -22,8 +23,8 @@ test("calculate関数の減算テスト", () => {
 test("calculate関数の乗算テスト", () => {
   const result = calculate("multiply", 6, 7);
 
-  assert(result.success === true);
-  if (result.success) {
+  assert(R.isSuccess(result));
+  if (R.isSuccess(result)) {
     assert(result.value === 42);
   }
 });
@@ -31,8 +32,8 @@ test("calculate関数の乗算テスト", () => {
 test("calculate関数の除算テスト", () => {
   const result = calculate("divide", 15, 3);
 
-  assert(result.success === true);
-  if (result.success) {
+  assert(R.isSuccess(result));
+  if (R.isSuccess(result)) {
     assert(result.value === 5);
   }
 });
@@ -40,8 +41,8 @@ test("calculate関数の除算テスト", () => {
 test("ゼロ除算エラーテスト", () => {
   const result = calculate("divide", 10, 0);
 
-  assert(result.success === false);
-  if (!result.success) {
+  assert(R.isFailure(result));
+  if (R.isFailure(result)) {
     assert(result.error === "Division by zero is not allowed");
   }
 });
@@ -49,8 +50,8 @@ test("ゼロ除算エラーテスト", () => {
 test("不正な演算子エラーテスト", () => {
   const result = calculate("invalid", 1, 2);
 
-  assert(result.success === false);
-  if (!result.success) {
+  assert(R.isFailure(result));
+  if (R.isFailure(result)) {
     assert(result.error === "Unknown operation: invalid");
   }
 });
@@ -61,13 +62,13 @@ test("記号での演算テスト", () => {
   const multiplyResult = calculate("*", 4, 3);
   const divideResult = calculate("/", 8, 2);
 
-  assert(addResult.success === true);
-  assert(subtractResult.success === true);
-  assert(multiplyResult.success === true);
-  assert(divideResult.success === true);
+  assert(R.isSuccess(addResult));
+  assert(R.isSuccess(subtractResult));
+  assert(R.isSuccess(multiplyResult));
+  assert(R.isSuccess(divideResult));
 
-  if (addResult.success) assert(addResult.value === 5);
-  if (subtractResult.success) assert(subtractResult.value === 3);
-  if (multiplyResult.success) assert(multiplyResult.value === 12);
-  if (divideResult.success) assert(divideResult.value === 4);
+  if (R.isSuccess(addResult)) assert(addResult.value === 5);
+  if (R.isSuccess(subtractResult)) assert(subtractResult.value === 3);
+  if (R.isSuccess(multiplyResult)) assert(multiplyResult.value === 12);
+  if (R.isSuccess(divideResult)) assert(divideResult.value === 4);
 });
