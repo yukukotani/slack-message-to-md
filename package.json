@@ -1,21 +1,23 @@
 {
-  "name": "typescript-template",
-  "description": "TypeScript template for Coding AI Agent",
+  "name": "slack-message-to-md",
+  "description": "Convert Slack messages to Markdown format",
   "version": "1.0.0",
   "keywords": [],
   "author": "Yuku Kotani (y.kotani@dr-ubie.com)",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yukukotani/typescript-template"
+    "url": "https://github.com/yukukotani/slack-message-to-md"
   },
-  "homepage": "https://github.com/yukukotani/typescript-template",
-  "bugs": "https://github.com/yukukotani/typescript-template/issues",
+  "homepage": "https://github.com/yukukotani/slack-message-to-md",
+  "bugs": "https://github.com/yukukotani/slack-message-to-md/issues",
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
-  "bin": "dist/index.js",
+  "bin": {
+    "slack-message-to-md": "dist/cli.js"
+  },
   "files": [
     "dist",
     "package.json"
@@ -52,6 +54,8 @@
     "vitest": "^3.2.4"
   },
   "dependencies": {
-    "@praha/byethrow": "^0.6.3"
+    "@praha/byethrow": "^0.6.3",
+    "@slack/types": "^2.14.0",
+    "@slack/web-api": "^7.8.0"
   }
 }
