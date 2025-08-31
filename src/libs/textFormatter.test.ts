@@ -34,6 +34,36 @@ describe("formatMrkdwn", () => {
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
+  it("改行なしのコードブロック(```hello```)を改行付きに変換する", () => {
+    const input = "```hello```";
+    const expected = "```\nhello\n```";
+    expect(formatMrkdwn(input)).toBe(expected);
+  });
+
+  it("複雑な改行なしコードブロックを改行付きに変換する", () => {
+    const input = "```const x = 42;```";
+    const expected = "```\nconst x = 42;\n```";
+    expect(formatMrkdwn(input)).toBe(expected);
+  });
+
+  it("言語指定付きの改行なしコードブロックを変換する", () => {
+    const input = "```javascript:console.log('test');```";
+    const expected = "```\njavascript:console.log('test');\n```";
+    expect(formatMrkdwn(input)).toBe(expected);
+  });
+
+  it("部分的に改行があるコードブロックも適切に処理する", () => {
+    const input = "```\nhello```";
+    const expected = "```\nhello\n```";
+    expect(formatMrkdwn(input)).toBe(expected);
+  });
+
+  it("末尾のみ改行があるコードブロックも適切に処理する", () => {
+    const input = "```hello\n```";
+    const expected = "```\nhello\n```";
+    expect(formatMrkdwn(input)).toBe(expected);
+  });
+
   it("リンク(<url|label>)を[label](url)に変換する", () => {
     expect(
       formatMrkdwn("詳細は<https://example.com|こちら>をご覧ください"),
@@ -83,6 +113,12 @@ describe("formatMrkdwn", () => {
   it("コードブロックの前にテキストがある場合", () => {
     const input = "以下のコードを確認してください:\n```\nfunction hello() {\n  console.log('hello');\n}\n```";
     const expected = "以下のコードを確認してください:\n\n```\nfunction hello() {\n  console.log('hello');\n}\n```";
+    expect(formatMrkdwn(input)).toBe(expected);
+  });
+
+  it("改行なしコードブロックの前にテキストがある場合", () => {
+    const input = "コードは```hello```です。";
+    const expected = "コードは\n\n```\nhello\n```\n\nです。";
     expect(formatMrkdwn(input)).toBe(expected);
   });
 

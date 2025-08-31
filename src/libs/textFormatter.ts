@@ -121,11 +121,19 @@ const EMOJI_MAP: Record<string, string> = {
 export function formatMrkdwn(text: string): string {
   let result = text;
 
-  // コードブロックを一時的に保護
+  // コードブロックを一時的に保護（```の直後・直前に改行がない場合は追加）
   const codeBlocks: string[] = [];
   result = result.replace(/```[\s\S]*?```/g, (match) => {
     const index = codeBlocks.length;
-    codeBlocks.push(match);
+    // ```の直後と直前に改行を確保
+    let processedBlock = match;
+    if (processedBlock.startsWith('```') && processedBlock.length > 3 && processedBlock.charAt(3) !== '\n') {
+      processedBlock = '```\n' + processedBlock.slice(3);
+    }
+    if (processedBlock.endsWith('```') && processedBlock.length > 3 && processedBlock.charAt(processedBlock.length - 4) !== '\n') {
+      processedBlock = processedBlock.slice(0, -3) + '\n```';
+    }
+    codeBlocks.push(processedBlock);
     return `\x00CODE_BLOCK_${index}\x00`;
   });
 
