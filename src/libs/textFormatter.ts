@@ -153,6 +153,14 @@ export function formatMrkdwn(text: string): string {
     return `\x00INLINE_CODE_${index}\x00`;
   });
 
+  // 絵文字を一時的に保護（アンダーバーを含む絵文字が斜体として誤変換されないように）
+  const emojis: string[] = [];
+  result = result.replace(/:[a-zA-Z0-9_+-]+:/g, (match) => {
+    const index = emojis.length;
+    emojis.push(match);
+    return `\x00EMOJI_${index}\x00`;
+  });
+
   // チャンネルメンション (<#C123456|channel-name> -> #channel-name)
   result = result.replace(/<#([^|>]+)\|([^>]+)>/g, "#$2");
 
@@ -183,6 +191,12 @@ export function formatMrkdwn(text: string): string {
 
   // 取り消し線 (~text~ -> ~~text~~)
   result = result.replace(/~([^~]+)~/g, "~~$1~~");
+
+  // 絵文字を復元
+  emojis.forEach((emoji, i) => {
+    const placeholder = new RegExp(`\\x00EMOJI[_*]${i}\\x00`, "g");
+    result = result.replace(placeholder, emoji);
+  });
 
   // インラインコードを復元
   inlineCodes.forEach((code, i) => {

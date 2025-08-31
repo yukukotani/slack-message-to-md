@@ -193,6 +193,27 @@ describe("formatMrkdwn", () => {
       '```\n// *太字*は変換されない\n// <@U123456>メンションも変換されない\n// <https://example.com|リンク>も変換されない\nconst text = "_斜体_も変換されない";\n```';
     expect(formatMrkdwn(input)).toBe(expected);
   });
+
+  it("アンダーバーを含む絵文字は斜体として誤変換されない", () => {
+    expect(formatMrkdwn(":hammer_and_wrench:")).toBe(":hammer_and_wrench:");
+    expect(formatMrkdwn("絵文字 :snake_game: があります")).toBe(
+      "絵文字 :snake_game: があります",
+    );
+    expect(formatMrkdwn(":point_up_2: と :thumbs_up: です")).toBe(
+      ":point_up_2: と :thumbs_up: です",
+    );
+  });
+
+  it("アンダーバーを含む絵文字と斜体が混在しても正しく処理される", () => {
+    const input = "This is _italic_ text with :hammer_and_wrench: emoji";
+    const expected = "This is *italic* text with :hammer_and_wrench: emoji";
+    expect(formatMrkdwn(input)).toBe(expected);
+  });
+
+  it("複数のアンダーバーを含む絵文字も正しく処理される", () => {
+    expect(formatMrkdwn(":rolled_up_newspaper:")).toBe(":rolled_up_newspaper:");
+    expect(formatMrkdwn(":man_in_tuxedo_tone1:")).toBe(":man_in_tuxedo_tone1:");
+  });
 });
 
 describe("formatPlainText", () => {
