@@ -89,7 +89,7 @@ export function parseAttachmentFields(
   }
 
   const fieldTexts = fields.map((field) => {
-    return `###${field.title}\n\n${field.value}`;
+    return `### ${field.title}\n\n${field.value}`;
   });
 
   return fieldTexts.join("\n\n");
