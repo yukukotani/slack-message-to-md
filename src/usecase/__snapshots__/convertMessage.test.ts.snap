@@ -18,7 +18,9 @@ exports[`convertMessage blocksを含むメッセージを変換 1`] = `
 
 # Important Notice
 
-This is a **section** with formatting."
+<section>
+This is a **section** with formatting.
+</section>"
 ,
   "success": true,
 }
@@ -71,7 +73,9 @@ exports[`convertMessage 複数要素を含む複雑なメッセージを変換 1
   "markdown": 
 "**@U123456** - 2024-01-11 13:40:00
 
+<section>
 Block content
+</section>
 
 <attachment>
 **Attachment**

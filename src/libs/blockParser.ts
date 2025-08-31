@@ -210,7 +210,8 @@ export function parseSectionBlock(block: SectionBlock): string {
     }
   }
 
-  return parts.join("\n\n");
+  const content = parts.join("\n\n");
+  return content ? `<section>\n${content}\n</section>` : "";
 }
 
 export function parseHeaderBlock(block: HeaderBlock): string {

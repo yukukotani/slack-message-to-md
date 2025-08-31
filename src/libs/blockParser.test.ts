@@ -209,7 +209,9 @@ describe("parseSectionBlock", () => {
         text: "これはセクションのテキストです",
       },
     };
-    expect(parseSectionBlock(block)).toBe("これはセクションのテキストです");
+    expect(parseSectionBlock(block)).toBe(
+      "<section>\nこれはセクションのテキストです\n</section>",
+    );
   });
 
   it("mrkdwnテキストのセクションを解析する", () => {
@@ -220,7 +222,9 @@ describe("parseSectionBlock", () => {
         text: "*太字*と_斜体_のテキスト",
       },
     };
-    expect(parseSectionBlock(block)).toBe("**太字**と*斜体*のテキスト");
+    expect(parseSectionBlock(block)).toBe(
+      "<section>\n**太字**と*斜体*のテキスト\n</section>",
+    );
   });
 
   it("フィールド付きセクションを解析する", () => {
@@ -233,7 +237,9 @@ describe("parseSectionBlock", () => {
         { type: "plain_text", text: "値2" },
       ],
     };
-    expect(parseSectionBlock(block)).toBe("項目1 | 値1\n項目2 | 値2");
+    expect(parseSectionBlock(block)).toBe(
+      "<section>\n項目1 | 値1\n項目2 | 値2\n</section>",
+    );
   });
 
   it("テキストとフィールドの両方を持つセクションを解析する", () => {
@@ -248,7 +254,9 @@ describe("parseSectionBlock", () => {
         { type: "plain_text", text: "値1" },
       ],
     };
-    expect(parseSectionBlock(block)).toBe("メインテキスト\n\n項目1 | 値1");
+    expect(parseSectionBlock(block)).toBe(
+      "<section>\nメインテキスト\n\n項目1 | 値1\n</section>",
+    );
   });
 });
 
@@ -344,7 +352,9 @@ describe("parseBlocks", () => {
         elements: [{ type: "plain_text", text: "フッター" }],
       } as ContextBlock,
     ];
-    expect(parseBlocks(blocks)).toBe("# タイトル\n\n本文\n\n---\n\n_フッター_");
+    expect(parseBlocks(blocks)).toBe(
+      "# タイトル\n\n<section>\n本文\n</section>\n\n---\n\n_フッター_",
+    );
   });
 
   it("未知のブロックタイプを適切に処理する", () => {
@@ -358,6 +368,6 @@ describe("parseBlocks", () => {
         text: "未知のブロック",
       } as unknown as Block,
     ];
-    expect(parseBlocks(blocks)).toBe("既知のブロック");
+    expect(parseBlocks(blocks)).toBe("<section>\n既知のブロック\n</section>");
   });
 });
