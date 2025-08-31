@@ -80,5 +80,3 @@ export const SlackMessageSchema = z.object({
   thread_ts: z.string().optional(),
   parent_user_id: z.string().optional(),
 });
-
-type SlackMessageInput = z.infer<typeof SlackMessageSchema>;

@@ -1,4 +1,5 @@
 import type {
+  Block,
   ContextBlock,
   DividerBlock,
   HeaderBlock,
@@ -16,7 +17,6 @@ import {
   parseRichTextBlock,
   parseSectionBlock,
 } from "./blockParser";
-import type { TestBlock } from "./types";
 
 describe("parseRichTextBlock", () => {
   it("rich_text_sectionを解析する", () => {
@@ -327,37 +327,37 @@ describe("parseImageBlock", () => {
 
 describe("parseBlocks", () => {
   it("複数のブロックを順番に処理する", () => {
-    const blocks: TestBlock[] = [
+    const blocks: Block[] = [
       {
         type: "header",
         text: { type: "plain_text", text: "タイトル" },
-      },
+      } as HeaderBlock,
       {
         type: "section",
         text: { type: "plain_text", text: "本文" },
-      },
+      } as SectionBlock,
       {
         type: "divider",
-      },
+      } as DividerBlock,
       {
         type: "context",
         elements: [{ type: "plain_text", text: "フッター" }],
-      },
+      } as ContextBlock,
     ];
     expect(parseBlocks(blocks)).toBe("# タイトル\n\n本文\n\n---\n\n_フッター_");
   });
 
   it("未知のブロックタイプを適切に処理する", () => {
-    const blocks = [
+    const blocks: Block[] = [
       {
         type: "section",
         text: { type: "plain_text", text: "既知のブロック" },
-      },
+      } as SectionBlock,
       {
         type: "unknown_block_type",
         text: "未知のブロック",
-      },
-    ] as TestBlock[];
+      } as unknown as Block,
+    ];
     expect(parseBlocks(blocks)).toBe("既知のブロック");
   });
 });

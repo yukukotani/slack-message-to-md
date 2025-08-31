@@ -4,7 +4,6 @@ import type {
   Block,
   ContextBlock,
   DividerBlock,
-  FileBlock,
   HeaderBlock,
   ImageBlock,
   InputBlock,
@@ -117,10 +116,6 @@ export type EditedInfo = {
   ts: string;
 };
 
-function isSlackMessage(obj: unknown): obj is SlackMessage {
-  return typeof obj === "object" && obj !== null && "type" in obj;
-}
-
 export function hasBlocks(
   message: SlackMessage,
 ): message is SlackMessage & { blocks: Block[] } {
@@ -169,10 +164,6 @@ export function isActionsBlock(block: Block): block is ActionsBlock {
 
 export function isInputBlock(block: Block): block is InputBlock {
   return block.type === "input";
-}
-
-function isFileBlock(block: Block): block is FileBlock {
-  return block.type === "file";
 }
 
 export function isPlainTextElement(

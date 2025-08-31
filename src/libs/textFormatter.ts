@@ -127,11 +127,19 @@ export function formatMrkdwn(text: string): string {
     const index = codeBlocks.length;
     // ```の直後と直前に改行を確保
     let processedBlock = match;
-    if (processedBlock.startsWith('```') && processedBlock.length > 3 && processedBlock.charAt(3) !== '\n') {
-      processedBlock = '```\n' + processedBlock.slice(3);
+    if (
+      processedBlock.startsWith("```") &&
+      processedBlock.length > 3 &&
+      processedBlock.charAt(3) !== "\n"
+    ) {
+      processedBlock = `\`\`\`\n${processedBlock.slice(3)}`;
     }
-    if (processedBlock.endsWith('```') && processedBlock.length > 3 && processedBlock.charAt(processedBlock.length - 4) !== '\n') {
-      processedBlock = processedBlock.slice(0, -3) + '\n```';
+    if (
+      processedBlock.endsWith("```") &&
+      processedBlock.length > 3 &&
+      processedBlock.charAt(processedBlock.length - 4) !== "\n"
+    ) {
+      processedBlock = `${processedBlock.slice(0, -3)}\n\`\`\``;
     }
     codeBlocks.push(processedBlock);
     return `\x00CODE_BLOCK_${index}\x00`;
@@ -186,18 +194,18 @@ export function formatMrkdwn(text: string): string {
   codeBlocks.forEach((block, i) => {
     const placeholder = `\\x00CODE[_*]BLOCK[_*]${i}\\x00`;
     const regex = new RegExp(placeholder, "g");
-    
-    result = result.replace(regex, (match) => {
+
+    result = result.replace(regex, (_match) => {
       // コードブロックの前後に改行を追加
       return `\n\n${block}\n\n`;
     });
   });
 
   // 文頭・文末の余分な改行を整理
-  result = result.replace(/^\n+/, '').replace(/\n+$/, '');
-  
+  result = result.replace(/^\n+/, "").replace(/\n+$/, "");
+
   // 連続する改行を最大2つまでに制限（空行は1つまで）
-  result = result.replace(/\n{4,}/g, '\n\n\n').replace(/\n{3}/g, '\n\n');
+  result = result.replace(/\n{4,}/g, "\n\n\n").replace(/\n{3}/g, "\n\n");
 
   return result;
 }

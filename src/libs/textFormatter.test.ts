@@ -111,8 +111,10 @@ describe("formatMrkdwn", () => {
   });
 
   it("コードブロックの前にテキストがある場合", () => {
-    const input = "以下のコードを確認してください:\n```\nfunction hello() {\n  console.log('hello');\n}\n```";
-    const expected = "以下のコードを確認してください:\n\n```\nfunction hello() {\n  console.log('hello');\n}\n```";
+    const input =
+      "以下のコードを確認してください:\n```\nfunction hello() {\n  console.log('hello');\n}\n```";
+    const expected =
+      "以下のコードを確認してください:\n\n```\nfunction hello() {\n  console.log('hello');\n}\n```";
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
@@ -123,44 +125,72 @@ describe("formatMrkdwn", () => {
   });
 
   it("コードブロックの後にテキストがある場合", () => {
-    const input = "```\nfunction hello() {\n  console.log('hello');\n}\n```\nこのコードは挨拶を出力します。";
-    const expected = "```\nfunction hello() {\n  console.log('hello');\n}\n```\n\nこのコードは挨拶を出力します。";
+    const input =
+      "```\nfunction hello() {\n  console.log('hello');\n}\n```\nこのコードは挨拶を出力します。";
+    const expected =
+      "```\nfunction hello() {\n  console.log('hello');\n}\n```\n\nこのコードは挨拶を出力します。";
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
   it("コードブロックの前後にテキストがある場合", () => {
-    const input = "サンプルコード:\n```\nconst name = 'World';\nconsole.log(`Hello, ${name}!`);\n```\n実行すると\"Hello, World!\"が表示されます。";
-    const expected = "サンプルコード:\n\n```\nconst name = 'World';\nconsole.log(`Hello, ${name}!`);\n```\n\n実行すると\"Hello, World!\"が表示されます。";
+    const input = [
+      "サンプルコード:",
+      "```",
+      "const name = 'World';",
+      `console.log(\`Hello, \${name}!\`);`,
+      "```",
+      '実行すると"Hello, World!"が表示されます。',
+    ].join("\n");
+    const expected = [
+      "サンプルコード:",
+      "",
+      "```",
+      "const name = 'World';",
+      `console.log(\`Hello, \${name}!\`);`,
+      "```",
+      "",
+      '実行すると"Hello, World!"が表示されます。',
+    ].join("\n");
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
   it("コードブロックの前後にフォーマット済みテキストがある場合", () => {
-    const input = "*重要*: 以下のコードを参照してください:\n```\nif (condition) {\n  return true;\n}\n```\n_注意_: このコードは<https://example.com|公式ドキュメント>から引用しました。";
-    const expected = "**重要**: 以下のコードを参照してください:\n\n```\nif (condition) {\n  return true;\n}\n```\n\n*注意*: このコードは[公式ドキュメント](https://example.com)から引用しました。";
+    const input =
+      "*重要*: 以下のコードを参照してください:\n```\nif (condition) {\n  return true;\n}\n```\n_注意_: このコードは<https://example.com|公式ドキュメント>から引用しました。";
+    const expected =
+      "**重要**: 以下のコードを参照してください:\n\n```\nif (condition) {\n  return true;\n}\n```\n\n*注意*: このコードは[公式ドキュメント](https://example.com)から引用しました。";
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
   it("インラインコードの前後にテキストがある場合", () => {
-    const input = "変数`userName`を使って、`console.log(userName)`でユーザー名を出力します。";
-    const expected = "変数`userName`を使って、`console.log(userName)`でユーザー名を出力します。";
+    const input =
+      "変数`userName`を使って、`console.log(userName)`でユーザー名を出力します。";
+    const expected =
+      "変数`userName`を使って、`console.log(userName)`でユーザー名を出力します。";
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
   it("インラインコードの前後にフォーマット済みテキストがある場合", () => {
-    const input = "*重要*: 関数`getData()`を呼び出す前に、_必ず_認証を確認してください。";
-    const expected = "**重要**: 関数`getData()`を呼び出す前に、*必ず*認証を確認してください。";
+    const input =
+      "*重要*: 関数`getData()`を呼び出す前に、_必ず_認証を確認してください。";
+    const expected =
+      "**重要**: 関数`getData()`を呼び出す前に、*必ず*認証を確認してください。";
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
   it("複数のコードブロックが混在する場合", () => {
-    const input = "最初の例:\n```\nfunction a() {\n  return 1;\n}\n```\n次の例:\n```\nfunction b() {\n  return 2;\n}\n```\n以上です。";
-    const expected = "最初の例:\n\n```\nfunction a() {\n  return 1;\n}\n```\n\n次の例:\n\n```\nfunction b() {\n  return 2;\n}\n```\n\n以上です。";
+    const input =
+      "最初の例:\n```\nfunction a() {\n  return 1;\n}\n```\n次の例:\n```\nfunction b() {\n  return 2;\n}\n```\n以上です。";
+    const expected =
+      "最初の例:\n\n```\nfunction a() {\n  return 1;\n}\n```\n\n次の例:\n\n```\nfunction b() {\n  return 2;\n}\n```\n\n以上です。";
     expect(formatMrkdwn(input)).toBe(expected);
   });
 
   it("コードブロック内のSlackマークアップは変換されない", () => {
-    const input = "```\n// *太字*は変換されない\n// <@U123456>メンションも変換されない\n// <https://example.com|リンク>も変換されない\nconst text = \"_斜体_も変換されない\";\n```";
-    const expected = "```\n// *太字*は変換されない\n// <@U123456>メンションも変換されない\n// <https://example.com|リンク>も変換されない\nconst text = \"_斜体_も変換されない\";\n```";
+    const input =
+      '```\n// *太字*は変換されない\n// <@U123456>メンションも変換されない\n// <https://example.com|リンク>も変換されない\nconst text = "_斜体_も変換されない";\n```';
+    const expected =
+      '```\n// *太字*は変換されない\n// <@U123456>メンションも変換されない\n// <https://example.com|リンク>も変換されない\nconst text = "_斜体_も変換されない";\n```';
     expect(formatMrkdwn(input)).toBe(expected);
   });
 });
