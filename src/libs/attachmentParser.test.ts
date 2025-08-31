@@ -89,13 +89,13 @@ describe("formatAttachmentColor", () => {
 });
 
 describe("parseAttachmentFields", () => {
-  it("2つのフィールドを表形式で表示", () => {
+  it("2つのフィールドを表示", () => {
     const fields = [
       { title: "Priority", value: "High", short: true },
       { title: "Status", value: "Open", short: true },
     ];
     expect(parseAttachmentFields(fields)).toBe(
-      "| Priority | High |\n| Status | Open |",
+      "###Priority\n\nHigh\n\n###Status\n\nOpen",
     );
   });
 
@@ -108,7 +108,7 @@ describe("parseAttachmentFields", () => {
       },
     ];
     expect(parseAttachmentFields(fields)).toBe(
-      "**Description**\nThis is a long description",
+      "###Description\n\nThis is a long description",
     );
   });
 
@@ -119,7 +119,7 @@ describe("parseAttachmentFields", () => {
       { title: "Details", value: "Long detailed text", short: false },
     ];
     expect(parseAttachmentFields(fields)).toBe(
-      "| Type | Bug |\n| Severity | High |\n\n**Details**\nLong detailed text",
+      "###Type\n\nBug\n\n###Severity\n\nHigh\n\n###Details\n\nLong detailed text",
     );
   });
 
@@ -170,8 +170,10 @@ describe("parseAttachments", () => {
     const result = parseAttachments(attachments);
     expect(result).toContain("New issue created");
     expect(result).toContain("**Issue #123**");
-    expect(result).toContain("| Type | Bug |");
-    expect(result).toContain("| Priority | High |");
+    expect(result).toContain("###Type");
+    expect(result).toContain("Bug");
+    expect(result).toContain("###Priority");
+    expect(result).toContain("High");
   });
 
   it("作成者情報付きアタッチメントを変換", () => {

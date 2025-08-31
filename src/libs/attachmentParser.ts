@@ -88,26 +88,11 @@ export function parseAttachmentFields(
     return "";
   }
 
-  const shortFields: string[] = [];
-  const longFields: string[] = [];
+  const fieldTexts = fields.map((field) => {
+    return `###${field.title}\n\n${field.value}`;
+  });
 
-  for (const field of fields) {
-    if (field.short) {
-      shortFields.push(`| ${field.title} | ${field.value} |`);
-    } else {
-      longFields.push(`**${field.title}**\n${field.value}`);
-    }
-  }
-
-  const parts: string[] = [];
-  if (shortFields.length > 0) {
-    parts.push(shortFields.join("\n"));
-  }
-  if (longFields.length > 0) {
-    parts.push(longFields.join("\n\n"));
-  }
-
-  return parts.join("\n\n");
+  return fieldTexts.join("\n\n");
 }
 
 export function formatAttachmentColor(color?: string): string {
