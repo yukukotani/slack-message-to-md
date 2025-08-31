@@ -210,7 +210,7 @@ describe("parseSectionBlock", () => {
       },
     };
     expect(parseSectionBlock(block)).toBe(
-      "<section>\nこれはセクションのテキストです\n</section>",
+      "<section>\n\nこれはセクションのテキストです\n\n</section>",
     );
   });
 
@@ -223,7 +223,7 @@ describe("parseSectionBlock", () => {
       },
     };
     expect(parseSectionBlock(block)).toBe(
-      "<section>\n**太字**と*斜体*のテキスト\n</section>",
+      "<section>\n\n**太字**と*斜体*のテキスト\n\n</section>",
     );
   });
 
@@ -238,7 +238,7 @@ describe("parseSectionBlock", () => {
       ],
     };
     expect(parseSectionBlock(block)).toBe(
-      "<section>\n項目1 | 値1\n項目2 | 値2\n</section>",
+      "<section>\n\n項目1 | 値1\n項目2 | 値2\n\n</section>",
     );
   });
 
@@ -255,7 +255,7 @@ describe("parseSectionBlock", () => {
       ],
     };
     expect(parseSectionBlock(block)).toBe(
-      "<section>\nメインテキスト\n\n項目1 | 値1\n</section>",
+      "<section>\n\nメインテキスト\n\n項目1 | 値1\n\n</section>",
     );
   });
 });
@@ -353,7 +353,7 @@ describe("parseBlocks", () => {
       } as ContextBlock,
     ];
     expect(parseBlocks(blocks)).toBe(
-      "# タイトル\n\n<section>\n本文\n</section>\n\n---\n\n_フッター_",
+      "# タイトル\n\n<section>\n\n本文\n\n</section>\n\n---\n\n_フッター_",
     );
   });
 
@@ -368,6 +368,8 @@ describe("parseBlocks", () => {
         text: "未知のブロック",
       } as unknown as Block,
     ];
-    expect(parseBlocks(blocks)).toBe("<section>\n既知のブロック\n</section>");
+    expect(parseBlocks(blocks)).toBe(
+      "<section>\n\n既知のブロック\n\n</section>",
+    );
   });
 });
