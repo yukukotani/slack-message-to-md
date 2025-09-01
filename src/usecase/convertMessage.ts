@@ -107,13 +107,6 @@ export function convertMessage(
   }
 }
 
-export function convertMultipleMessages(
-  messages: SlackMessage[],
-  userMapping?: UserMapping,
-): ConversionResult[] {
-  return messages.map((message) => convertMessage(message, userMapping));
-}
-
 export function convertMessageWithValidation(
   message: unknown,
   userMapping?: UserMapping,

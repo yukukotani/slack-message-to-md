@@ -1,10 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { SlackMessage } from "../libs/types";
-import {
-  convertMessage,
-  convertMessageWithValidation,
-  convertMultipleMessages,
-} from "./convertMessage";
+import { convertMessage, convertMessageWithValidation } from "./convertMessage";
 
 describe("convertMessage", () => {
   it("基本的なテキストメッセージを変換", () => {
@@ -149,49 +145,6 @@ describe("convertMessage", () => {
     };
     const result = convertMessage(message);
     expect(result).toMatchSnapshot();
-  });
-});
-
-describe("convertMultipleMessages", () => {
-  it("複数メッセージを順番に変換", () => {
-    const messages: SlackMessage[] = [
-      {
-        type: "message",
-        text: "First message",
-        user: "U123456",
-        ts: "1704980400",
-      },
-      {
-        type: "message",
-        text: "Second message",
-        user: "U234567",
-        ts: "1704984000",
-      },
-    ];
-    const results = convertMultipleMessages(messages);
-    expect(results).toMatchSnapshot();
-  });
-
-  it("エラーメッセージも含めて処理", () => {
-    const messages: SlackMessage[] = [
-      {
-        type: "message",
-        text: "Valid message",
-        user: "U123456",
-        ts: "1704980400",
-      },
-      {
-        type: "message",
-        ts: "1704984000", // テキストなし
-      },
-    ];
-    const results = convertMultipleMessages(messages);
-    expect(results).toMatchSnapshot();
-  });
-
-  it("空の配列を処理", () => {
-    const results = convertMultipleMessages([]);
-    expect(results).toMatchSnapshot();
   });
 });
 
