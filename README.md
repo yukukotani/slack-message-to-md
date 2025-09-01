@@ -1,24 +1,26 @@
 # slack-message-to-md
 
-SlackのAPIメッセージオブジェクトをMarkdown形式に変換するTypeScriptライブラリです。
+A TypeScript library that converts Slack API message objects to Markdown format.
 
-## 特徴
+[日本語版 README](./README_ja.md)
 
-- **Block Kit対応**: Block Kit要素をMarkdownに変換
-- **レガシーアタッチメント**: 従来のアタッチメント形式に対応
-- **ファイル共有**: 画像・ドキュメントファイルの変換
-- **ユーザーマッピング**: ユーザーIDから実名への変換機能
-- **型安全**: TypeScript完全対応
+## Features
 
-## インストール
+- **Block Kit Support**: Convert Block Kit elements to Markdown
+- **Legacy Attachments**: Support for traditional attachment formats
+- **File Sharing**: Convert image and document files
+- **User Mapping**: Convert user IDs to real names
+- **Type Safe**: Full TypeScript support
+
+## Installation
 
 ```bash
 npm install slack-message-to-md
 ```
 
-## 使用方法
+## Usage
 
-### プログラマティック API
+### Programmatic API
 
 ```typescript
 import { convertMessage } from 'slack-message-to-md';
@@ -30,48 +32,48 @@ const message = {
   ts: "1704980400"
 };
 
-// 基本的な変換
+// Basic conversion
 const markdown = convertMessage(message);
 
-// ユーザーマッピング付きで変換
-const userMapping = { "U123456789": "太郎" };
+// Conversion with user mapping
+const userMapping = { "U123456789": "John Doe" };
 const markdownWithUsers = convertMessage(message, userMapping);
 ```
 
 ### CLI
 
 ```bash
-# JSONファイルを標準出力に変換
+# Convert JSON file to stdout
 npx slack-message-to-md message.json
 
-# ファイルに出力
+# Output to file
 npx slack-message-to-md message.json output.md
 ```
 
-## 対応要素
+## Supported Elements
 
-- **Block Kit**: Section、Header、Divider、Image、Context、Rich Text
-- **テキスト**: mrkdwn フォーマット（太字、斜体、リンク、絵文字）
-- **アタッチメント**: タイトル、テキスト、フィールド、色
-- **ファイル**: 画像ファイル、ドキュメント
-- **メタデータ**: ユーザー情報、タイムスタンプ、リアクション
+- **Block Kit**: Section, Header, Divider, Image, Context, Rich Text
+- **Text**: mrkdwn format (bold, italic, links, emojis)
+- **Attachments**: Title, text, fields, colors
+- **Files**: Image files, documents
+- **Metadata**: User info, timestamps, reactions
 
-## 開発
+## Development
 
 ```bash
-# インストール
+# Install dependencies
 bun install
 
-# テスト
+# Run tests
 bun test
 
-# リント
+# Lint
 bun lint
 
-# ビルド
+# Build
 bun run build
 ```
 
-## ライセンス
+## License
 
 Apache-2.0
