@@ -9,7 +9,6 @@ import { parseFiles } from "../libs/fileParser";
 import {
   formatEditedInfo,
   formatReactions,
-  formatThreadInfo,
   formatUserHeader,
 } from "../libs/metadataParser";
 import { formatMrkdwn } from "../libs/textFormatter";
@@ -94,13 +93,7 @@ export function convertMessage(
       }
     }
 
-    // 6. スレッド情報
-    const threadInfo = wrapSafeExecution(() => formatThreadInfo(message), "");
-    if (threadInfo) {
-      sections.push(threadInfo);
-    }
-
-    // 7. 編集情報
+    // 6. 編集情報
     if (message.edited) {
       const editedInfo = wrapSafeExecution(
         () => formatEditedInfo(message.edited, userMapping),

@@ -2,11 +2,10 @@ import { describe, expect, it } from "vitest";
 import {
   formatEditedInfo,
   formatReactions,
-  formatThreadInfo,
   formatTimestamp,
   formatUserHeader,
 } from "./metadataParser";
-import type { EditedInfo, Reaction, SlackMessage } from "./types";
+import type { EditedInfo, Reaction } from "./types";
 
 describe("formatTimestamp", () => {
   it("Unixタイムスタンプを日時文字列に変換", () => {
@@ -121,56 +120,6 @@ describe("formatReactions", () => {
 
   it("未定義の場合", () => {
     expect(formatReactions(undefined)).toBe("");
-  });
-});
-
-describe("formatThreadInfo", () => {
-  it("スレッドのルートメッセージ", () => {
-    const message: SlackMessage = {
-      ts: "1704980400",
-      reply_count: 5,
-      reply_users: ["U123456", "U234567"],
-      reply_users_count: 2,
-      latest_reply: "1704984000",
-    };
-    expect(formatThreadInfo(message)).toBe(
-      "💬 **Thread** (5 replies, 2 users)",
-    );
-  });
-
-  it("スレッドの返信メッセージ", () => {
-    const message: SlackMessage = {
-      ts: "1704981000",
-      thread_ts: "1704980400",
-      parent_user_id: "U123456",
-    };
-    expect(formatThreadInfo(message)).toBe("↳ **Reply to thread**");
-  });
-
-  it("返信数が1の場合は単数形", () => {
-    const message: SlackMessage = {
-      ts: "1704980400",
-      reply_count: 1,
-      reply_users: ["U123456"],
-      reply_users_count: 1,
-      latest_reply: "1704981000",
-    };
-    expect(formatThreadInfo(message)).toBe("💬 **Thread** (1 reply, 1 user)");
-  });
-
-  it("返信数が0の場合は何も表示しない", () => {
-    const message: SlackMessage = {
-      ts: "1704980400",
-      reply_count: 0,
-    };
-    expect(formatThreadInfo(message)).toBe("");
-  });
-
-  it("スレッドでない場合", () => {
-    const message: SlackMessage = {
-      ts: "1704980400",
-    };
-    expect(formatThreadInfo(message)).toBe("");
   });
 });
 

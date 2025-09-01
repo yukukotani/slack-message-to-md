@@ -1,4 +1,4 @@
-import type { EditedInfo, Reaction, SlackMessage, UserMapping } from "./types";
+import type { EditedInfo, Reaction, UserMapping } from "./types";
 
 export function formatUserHeader(
   user?: string,
@@ -50,24 +50,6 @@ export function formatReactions(reactions?: Reaction[]): string {
     });
 
   return reactionTexts.join("\n");
-}
-
-export function formatThreadInfo(message: SlackMessage): string {
-  // スレッドの返信メッセージの場合
-  if (message.thread_ts && message.thread_ts !== message.ts) {
-    return "↳ **Reply to thread**";
-  }
-
-  // スレッドのルートメッセージの場合
-  if (message.reply_count && message.reply_count > 0) {
-    const replyCount = message.reply_count;
-    const userCount = message.reply_users_count || 0;
-    const replyWord = replyCount === 1 ? "reply" : "replies";
-    const userWord = userCount === 1 ? "user" : "users";
-    return `💬 **Thread** (${replyCount} ${replyWord}, ${userCount} ${userWord})`;
-  }
-
-  return "";
 }
 
 export function formatEditedInfo(
