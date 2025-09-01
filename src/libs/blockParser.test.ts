@@ -166,6 +166,29 @@ describe("parseRichTextBlock", () => {
     expect(parseRichTextBlock(block)).toBe("@U123456さん、こんにちは");
   });
 
+  it("ユーザーマッピングありでユーザーメンションを置き換える", () => {
+    const block: RichTextBlock = {
+      type: "rich_text",
+      elements: [
+        {
+          type: "rich_text_section",
+          elements: [
+            { type: "text", text: "Hello " },
+            { type: "user", user_id: "U123456" },
+            { type: "text", text: " and " },
+            { type: "user", user_id: "U999999" },
+            { type: "text", text: "!" },
+          ],
+        },
+      ],
+    };
+    const userMapping = {
+      U123456: "田中太郎",
+    };
+    const result = parseRichTextBlock(block, userMapping);
+    expect(result).toBe("Hello @田中太郎 and @U999999!");
+  });
+
   it("チャンネルメンションを正しく変換する", () => {
     const block: RichTextBlock = {
       type: "rich_text",

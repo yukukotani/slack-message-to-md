@@ -45,7 +45,7 @@ export function parseBlocks(
   const parsedBlocks = blocks
     .map((block) => {
       if (isRichTextBlock(block)) {
-        return parseRichTextBlock(block);
+        return parseRichTextBlock(block, userMapping);
       }
       if (isSectionBlock(block)) {
         return parseSectionBlock(block, userMapping);
@@ -76,20 +76,23 @@ export function parseBlocks(
   return parsedBlocks.join("\n\n");
 }
 
-export function parseRichTextBlock(block: RichTextBlock): string {
+export function parseRichTextBlock(
+  block: RichTextBlock,
+  userMapping?: UserMapping,
+): string {
   const elements = block.elements || [];
   const parsedElements = elements.map((element) => {
     if (isRichTextSection(element)) {
-      return parseRichTextSection(element);
+      return parseRichTextSection(element, userMapping);
     }
     if (isRichTextList(element)) {
-      return parseRichTextList(element);
+      return parseRichTextList(element, userMapping);
     }
     if (isRichTextQuote(element)) {
-      return parseRichTextQuote(element);
+      return parseRichTextQuote(element, userMapping);
     }
     if (isRichTextPreformatted(element)) {
-      return parseRichTextPreformatted(element);
+      return parseRichTextPreformatted(element, userMapping);
     }
     return "";
   });
@@ -97,12 +100,20 @@ export function parseRichTextBlock(block: RichTextBlock): string {
   return parsedElements.join("\n");
 }
 
-function parseRichTextSection(section: RichTextSection): string {
+function parseRichTextSection(
+  section: RichTextSection,
+  userMapping?: UserMapping,
+): string {
   const elements = section.elements || [];
-  return elements.map((element) => parseRichTextElement(element)).join("");
+  return elements
+    .map((element) => parseRichTextElement(element, userMapping))
+    .join("");
 }
 
-function parseRichTextElement(element: RichTextElement): string {
+function parseRichTextElement(
+  element: RichTextElement,
+  userMapping?: UserMapping,
+): string {
   switch (element.type) {
     case "text": {
       let text = element.text || "";
@@ -126,7 +137,9 @@ function parseRichTextElement(element: RichTextElement): string {
     case "link":
       return formatLink(element.url || "", element.text);
     case "user":
-      return `@${element.user_id}`;
+      return userMapping?.[element.user_id]
+        ? `@${userMapping[element.user_id]}`
+        : `@${element.user_id}`;
     case "channel":
       return `#${element.channel_id}`;
     case "emoji":
@@ -146,32 +159,44 @@ function parseRichTextElement(element: RichTextElement): string {
   }
 }
 
-function parseRichTextList(list: RichTextList): string {
+function parseRichTextList(
+  list: RichTextList,
+  userMapping?: UserMapping,
+): string {
   const elements = list.elements || [];
   const indent = "  ".repeat(list.indent || 0);
   const isOrdered = list.style === "ordered";
 
   return elements
     .map((element, index) => {
-      const content = parseRichTextSection(element as RichTextSection);
+      const content = parseRichTextSection(
+        element as RichTextSection,
+        userMapping,
+      );
       const prefix = isOrdered ? `${index + 1}.` : "-";
       return `${indent}${prefix} ${content}`;
     })
     .join("\n");
 }
 
-function parseRichTextQuote(quote: RichTextQuote): string {
+function parseRichTextQuote(
+  quote: RichTextQuote,
+  userMapping?: UserMapping,
+): string {
   const elements = quote.elements || [];
   const content = elements
-    .map((element) => parseRichTextElement(element))
+    .map((element) => parseRichTextElement(element, userMapping))
     .join("");
   return `> ${content}`;
 }
 
-function parseRichTextPreformatted(preformatted: RichTextPreformatted): string {
+function parseRichTextPreformatted(
+  preformatted: RichTextPreformatted,
+  userMapping?: UserMapping,
+): string {
   const elements = preformatted.elements || [];
   const content = elements
-    .map((element) => parseRichTextElement(element))
+    .map((element) => parseRichTextElement(element, userMapping))
     .join("");
   return `\`\`\`\n${content}\n\`\`\``;
 }
