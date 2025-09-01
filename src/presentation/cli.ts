@@ -1,10 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs as utilParseArgs } from "node:util";
 import type { SlackMessage } from "../libs/types";
-import {
-  convertMessage,
-  convertMultipleMessages,
-} from "../usecase/convertMessage";
+import { convertMessage } from "../usecase/convertMessage";
 
 export const handleCli = (): void => {
   const { values, positionals } = utilParseArgs({
@@ -61,12 +58,11 @@ export const handleCli = (): void => {
     if (Array.isArray(data)) {
       // 複数メッセージの処理
       const messages = data as SlackMessage[];
-      const results = convertMultipleMessages(messages);
-
       const markdownSections: string[] = [];
       const errors: string[] = [];
 
-      for (const [index, result] of results.entries()) {
+      for (const [index, message] of messages.entries()) {
+        const result = convertMessage(message);
         if (result.success) {
           markdownSections.push(result.markdown);
         } else {

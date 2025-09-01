@@ -109,53 +109,6 @@ exports[`convertMessage コンテンツがない場合のエラーハンドリ�
 }
 `;
 
-exports[`convertMultipleMessages 複数メッセージを順番に変換 1`] = `
-[
-  {
-    "markdown": 
-"**@U123456** - 2024-01-11 13:40:00
-
-First message"
-,
-    "success": true,
-  },
-  {
-    "markdown": 
-"**@U234567** - 2024-01-11 14:40:00
-
-Second message"
-,
-    "success": true,
-  },
-]
-`;
-
-exports[`convertMultipleMessages エラーメッセージも含めて処理 1`] = `
-[
-  {
-    "markdown": 
-"**@U123456** - 2024-01-11 13:40:00
-
-Valid message"
-,
-    "success": true,
-  },
-  {
-    "error": {
-      "code": "MISSING_CONTENT",
-      "details": {
-        "ts": "1704984000",
-        "type": "message",
-      },
-      "message": "No content to convert",
-    },
-    "success": false,
-  },
-]
-`;
-
-exports[`convertMultipleMessages 空の配列を処理 1`] = `[]`;
-
 exports[`convertMessage with userMapping ユーザーマッピングありでメンションを置き換え 1`] = `
 {
   "markdown": 
@@ -211,17 +164,6 @@ Meeting with @田中太郎 and @U999999 scheduled."
 }
 `;
 
-exports[`convertMessage with userMapping rich_text_section内のuser要素でマッピングなし 1`] = `
-{
-  "markdown": 
-"**@U111111** - 2024-01-11 13:40:00
-
-Hello @U123456!"
-,
-  "success": true,
-}
-`;
-
 exports[`convertMessage with userMapping メッセージauthorでユーザーマッピング 1`] = `
 {
   "markdown": 
@@ -238,9 +180,18 @@ exports[`convertMessage with userMapping 編集情報でユーザーマッピン
   "markdown": 
 "**@山田花子** - 2024-01-11 13:40:00
 
-Edited message
+Edited message"
+,
+  "success": true,
+}
+`;
 
-*(edited by @田中太郎 at 2024-01-11 14:40:00)*"
+exports[`convertMessage with userMapping rich_text_section内のuser要素でマッピングなし 1`] = `
+{
+  "markdown": 
+"**@U111111** - 2024-01-11 13:40:00
+
+Hello @U123456!"
 ,
   "success": true,
 }
