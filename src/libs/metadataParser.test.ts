@@ -1,11 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
-  formatEditedInfo,
   formatReactions,
   formatTimestamp,
   formatUserHeader,
 } from "./metadataParser";
-import type { EditedInfo, Reaction } from "./types";
+import type { Reaction } from "./types";
 
 describe("formatTimestamp", () => {
   it("Unixタイムスタンプを日時文字列に変換", () => {
@@ -120,45 +119,5 @@ describe("formatReactions", () => {
 
   it("未定義の場合", () => {
     expect(formatReactions(undefined)).toBe("");
-  });
-});
-
-describe("formatEditedInfo", () => {
-  it("編集済みメッセージの情報", () => {
-    const edited: EditedInfo = {
-      user: "U123456",
-      ts: "1704984000",
-    };
-    expect(formatEditedInfo(edited)).toBe(
-      "*(edited by @U123456 at 2024-01-11 14:40:00)*",
-    );
-  });
-
-  it("編集ユーザーのみの場合", () => {
-    const edited: EditedInfo = {
-      user: "U123456",
-      ts: "",
-    };
-    expect(formatEditedInfo(edited)).toBe("*(edited by @U123456)*");
-  });
-
-  it("編集時刻のみの場合", () => {
-    const edited: EditedInfo = {
-      user: "",
-      ts: "1704984000",
-    };
-    expect(formatEditedInfo(edited)).toBe("*(edited at 2024-01-11 14:40:00)*");
-  });
-
-  it("情報がない場合", () => {
-    const edited: EditedInfo = {
-      user: "",
-      ts: "",
-    };
-    expect(formatEditedInfo(edited)).toBe("*(edited)*");
-  });
-
-  it("未定義の場合", () => {
-    expect(formatEditedInfo(undefined as never)).toBe("");
   });
 });

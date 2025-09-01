@@ -6,11 +6,7 @@ import {
   wrapSafeExecution,
 } from "../libs/errorHandler";
 import { parseFiles } from "../libs/fileParser";
-import {
-  formatEditedInfo,
-  formatReactions,
-  formatUserHeader,
-} from "../libs/metadataParser";
+import { formatReactions, formatUserHeader } from "../libs/metadataParser";
 import { formatMrkdwn } from "../libs/textFormatter";
 import type {
   ConversionResult,
@@ -93,17 +89,6 @@ export function convertMessage(
       }
     }
 
-    // 6. 編集情報
-    if (message.edited) {
-      const editedInfo = wrapSafeExecution(
-        () => formatEditedInfo(message.edited, userMapping),
-        "",
-      );
-      if (editedInfo) {
-        sections.push(editedInfo);
-      }
-    }
-
     // 結合
     const markdown = sections
       .filter((section) => section.length > 0)
@@ -156,7 +141,6 @@ function hasContent(message: SlackMessage): boolean {
     hasAttachments(message) ||
     hasFiles(message) ||
     (message.reactions && message.reactions.length > 0) ||
-    message.reply_count ||
-    message.edited
+    message.reply_count
   );
 }

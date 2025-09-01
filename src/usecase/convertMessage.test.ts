@@ -297,10 +297,6 @@ describe("convertMessage with userMapping", () => {
       text: "Edited message",
       user: "U111111",
       ts: "1704980400",
-      edited: {
-        user: "U123456",
-        ts: "1704984000",
-      },
     };
     const userMapping = {
       U111111: "山田花子",

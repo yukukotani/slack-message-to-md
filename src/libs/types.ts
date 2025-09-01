@@ -84,7 +84,6 @@ export type SlackMessage = {
   reply_users?: string[];
   reply_users_count?: number;
   latest_reply?: string;
-  edited?: EditedInfo;
   thread_ts?: string;
   parent_user_id?: string;
 };
@@ -109,11 +108,6 @@ export type Reaction = {
   name: string;
   users: string[];
   count: number;
-};
-
-export type EditedInfo = {
-  user: string;
-  ts: string;
 };
 
 export type UserMapping = Record<string, string>;

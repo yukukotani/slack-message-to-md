@@ -1,4 +1,4 @@
-import type { EditedInfo, Reaction, UserMapping } from "./types";
+import type { Reaction, UserMapping } from "./types";
 
 export function formatUserHeader(
   user?: string,
@@ -50,29 +50,4 @@ export function formatReactions(reactions?: Reaction[]): string {
     });
 
   return reactionTexts.join("\n");
-}
-
-export function formatEditedInfo(
-  edited?: EditedInfo,
-  userMapping?: UserMapping,
-): string {
-  if (!edited) {
-    return "";
-  }
-
-  const parts: string[] = ["edited"];
-
-  if (edited.user) {
-    const displayName = userMapping?.[edited.user] || edited.user;
-    parts.push(`by @${displayName}`);
-  }
-
-  if (edited.ts) {
-    const timeStr = formatTimestamp(edited.ts);
-    if (timeStr) {
-      parts.push(`at ${timeStr}`);
-    }
-  }
-
-  return `*(${parts.join(" ")})*`;
 }
