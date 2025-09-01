@@ -35,7 +35,7 @@ export function convertMessage(
 
     // 1. ヘッダー（ユーザー + タイムスタンプ）
     const header = wrapSafeExecution(
-      () => formatUserHeader(message.user, message.ts),
+      () => formatUserHeader(message.user, message.ts, userMapping),
       "",
     );
     if (header) {
@@ -103,7 +103,7 @@ export function convertMessage(
     // 7. 編集情報
     if (message.edited) {
       const editedInfo = wrapSafeExecution(
-        () => formatEditedInfo(message.edited),
+        () => formatEditedInfo(message.edited, userMapping),
         "",
       );
       if (editedInfo) {

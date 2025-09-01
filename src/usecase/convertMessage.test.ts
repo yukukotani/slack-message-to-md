@@ -277,6 +277,39 @@ describe("convertMessage with userMapping", () => {
     expect(result).toMatchSnapshot();
   });
 
+  it("メッセージauthorでユーザーマッピング", () => {
+    const message: SlackMessage = {
+      type: "message",
+      text: "This is a test message",
+      user: "U123456",
+      ts: "1704980400",
+    };
+    const userMapping = {
+      U123456: "田中太郎",
+    };
+    const result = convertMessage(message, userMapping);
+    expect(result).toMatchSnapshot();
+  });
+
+  it("編集情報でユーザーマッピング", () => {
+    const message: SlackMessage = {
+      type: "message",
+      text: "Edited message",
+      user: "U111111",
+      ts: "1704980400",
+      edited: {
+        user: "U123456",
+        ts: "1704984000",
+      },
+    };
+    const userMapping = {
+      U111111: "山田花子",
+      U123456: "田中太郎",
+    };
+    const result = convertMessage(message, userMapping);
+    expect(result).toMatchSnapshot();
+  });
+
   it("rich_text_section内のuser要素でマッピングなし", () => {
     const message: SlackMessage = {
       type: "message",

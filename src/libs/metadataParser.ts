@@ -1,10 +1,15 @@
-import type { EditedInfo, Reaction, SlackMessage } from "./types";
+import type { EditedInfo, Reaction, SlackMessage, UserMapping } from "./types";
 
-export function formatUserHeader(user?: string, timestamp?: string): string {
+export function formatUserHeader(
+  user?: string,
+  timestamp?: string,
+  userMapping?: UserMapping,
+): string {
   const parts: string[] = [];
 
   if (user) {
-    parts.push(`**@${user}**`);
+    const displayName = userMapping?.[user] || user;
+    parts.push(`**@${displayName}**`);
   }
 
   if (timestamp) {
@@ -65,7 +70,10 @@ export function formatThreadInfo(message: SlackMessage): string {
   return "";
 }
 
-export function formatEditedInfo(edited?: EditedInfo): string {
+export function formatEditedInfo(
+  edited?: EditedInfo,
+  userMapping?: UserMapping,
+): string {
   if (!edited) {
     return "";
   }
@@ -73,7 +81,8 @@ export function formatEditedInfo(edited?: EditedInfo): string {
   const parts: string[] = ["edited"];
 
   if (edited.user) {
-    parts.push(`by @${edited.user}`);
+    const displayName = userMapping?.[edited.user] || edited.user;
+    parts.push(`by @${displayName}`);
   }
 
   if (edited.ts) {

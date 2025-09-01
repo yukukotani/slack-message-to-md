@@ -221,3 +221,27 @@ Hello @U123456!"
   "success": true,
 }
 `;
+
+exports[`convertMessage with userMapping メッセージauthorでユーザーマッピング 1`] = `
+{
+  "markdown": 
+"**@田中太郎** - 2024-01-11 13:40:00
+
+This is a test message"
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage with userMapping 編集情報でユーザーマッピング 1`] = `
+{
+  "markdown": 
+"**@山田花子** - 2024-01-11 13:40:00
+
+Edited message
+
+*(edited by @田中太郎 at 2024-01-11 14:40:00)*"
+,
+  "success": true,
+}
+`;
