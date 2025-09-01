@@ -246,6 +246,61 @@ describe("convertMessage with userMapping", () => {
     const result = convertMessage(message, {});
     expect(result).toMatchSnapshot();
   });
+
+  it("rich_text_section内のuser要素でユーザーマッピング", () => {
+    const message: SlackMessage = {
+      type: "message",
+      user: "U111111",
+      ts: "1704980400",
+      blocks: [
+        {
+          type: "rich_text",
+          elements: [
+            {
+              type: "rich_text_section",
+              elements: [
+                { type: "text", text: "Meeting with " },
+                { type: "user", user_id: "U123456" },
+                { type: "text", text: " and " },
+                { type: "user", user_id: "U999999" },
+                { type: "text", text: " scheduled." },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const userMapping = {
+      U123456: "田中太郎",
+    };
+    const result = convertMessage(message, userMapping);
+    expect(result).toMatchSnapshot();
+  });
+
+  it("rich_text_section内のuser要素でマッピングなし", () => {
+    const message: SlackMessage = {
+      type: "message",
+      user: "U111111",
+      ts: "1704980400",
+      blocks: [
+        {
+          type: "rich_text",
+          elements: [
+            {
+              type: "rich_text_section",
+              elements: [
+                { type: "text", text: "Hello " },
+                { type: "user", user_id: "U123456" },
+                { type: "text", text: "!" },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const result = convertMessage(message);
+    expect(result).toMatchSnapshot();
+  });
 });
 
 describe("convertMessageWithValidation", () => {

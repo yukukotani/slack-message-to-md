@@ -199,3 +199,25 @@ Hello @U123456!"
   "success": true,
 }
 `;
+
+exports[`convertMessage with userMapping rich_text_section内のuser要素でユーザーマッピング 1`] = `
+{
+  "markdown": 
+"**@U111111** - 2024-01-11 13:40:00
+
+Meeting with @田中太郎 and @U999999 scheduled."
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage with userMapping rich_text_section内のuser要素でマッピングなし 1`] = `
+{
+  "markdown": 
+"**@U111111** - 2024-01-11 13:40:00
+
+Hello @U123456!"
+,
+  "success": true,
+}
+`;
