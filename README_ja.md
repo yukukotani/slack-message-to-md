@@ -1,14 +1,14 @@
 # slack-message-to-md
 
-SlackのAPIメッセージオブジェクトをMarkdown形式に変換するTypeScriptライブラリです。
+Slack の API メッセージオブジェクトを AI フレンドリーな Markdown 形式に変換する TypeScript ライブラリです。
 
 ## 特徴
 
-- **Block Kit対応**: Block Kit要素をMarkdownに変換
+- **Block Kit 対応**: Block Kit 要素を Markdown に変換
 - **レガシーアタッチメント**: 従来のアタッチメント形式に対応
 - **ファイル共有**: 画像・ドキュメントファイルの変換
-- **ユーザーマッピング**: ユーザーIDから実名への変換機能
-- **型安全**: TypeScript完全対応
+- **ユーザーマッピング**: ユーザー ID から実名への変換機能
+- **型安全**: TypeScript 完全対応
 
 ## インストール
 
@@ -21,20 +21,20 @@ npm install slack-message-to-md
 ### プログラマティック API
 
 ```typescript
-import { convertMessage } from 'slack-message-to-md';
+import { convertMessage } from "slack-message-to-md";
 
 const message = {
   type: "message",
   text: "Hello *world*!",
   user: "U123456789",
-  ts: "1704980400"
+  ts: "1704980400",
 };
 
 // 基本的な変換
 const markdown = convertMessage(message);
 
 // ユーザーマッピング付きで変換
-const userMapping = { "U123456789": "太郎" };
+const userMapping = { U123456789: "太郎" };
 const markdownWithUsers = convertMessage(message, userMapping);
 ```
 

@@ -1,6 +1,6 @@
 {
   "name": "slack-message-to-md",
-  "description": "Convert Slack messages to Markdown format",
+  "description": "A TypeScript library that converts Slack API message objects to AI-friendly Markdown format.",
   "version": "0.1.0",
   "keywords": [],
   "author": "Yuku Kotani (y.kotani@dr-ubie.com)",
