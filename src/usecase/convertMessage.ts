@@ -13,11 +13,18 @@ import {
   formatUserHeader,
 } from "../libs/metadataParser";
 import { formatMrkdwn } from "../libs/textFormatter";
-import type { ConversionResult, SlackMessage } from "../libs/types";
+import type {
+  ConversionResult,
+  SlackMessage,
+  UserMapping,
+} from "../libs/types";
 import { hasAttachments, hasBlocks, hasFiles } from "../libs/types";
 import { SlackMessageSchema } from "../libs/validation";
 
-export function convertMessage(message: SlackMessage): ConversionResult {
+export function convertMessage(
+  message: SlackMessage,
+  userMapping?: UserMapping,
+): ConversionResult {
   try {
     // コンテンツがあるかチェック
     if (!hasContent(message)) {
@@ -38,7 +45,7 @@ export function convertMessage(message: SlackMessage): ConversionResult {
     // 2. メインコンテンツ（blocks が優先、なければ text）
     if (hasBlocks(message)) {
       const blocksContent = wrapSafeExecution(
-        () => parseBlocks(message.blocks),
+        () => parseBlocks(message.blocks, userMapping),
         "",
       );
       if (blocksContent) {
@@ -46,7 +53,7 @@ export function convertMessage(message: SlackMessage): ConversionResult {
       }
     } else if (message.text) {
       const textContent = wrapSafeExecution(
-        () => formatMrkdwn(message.text || ""),
+        () => formatMrkdwn(message.text || "", userMapping),
         message.text || "",
       );
       if (textContent) {
@@ -57,7 +64,7 @@ export function convertMessage(message: SlackMessage): ConversionResult {
     // 3. アタッチメント
     if (hasAttachments(message)) {
       const attachmentContent = wrapSafeExecution(
-        () => parseAttachments(message.attachments),
+        () => parseAttachments(message.attachments, userMapping),
         "",
       );
       if (attachmentContent) {
@@ -124,12 +131,14 @@ export function convertMessage(message: SlackMessage): ConversionResult {
 
 export function convertMultipleMessages(
   messages: SlackMessage[],
+  userMapping?: UserMapping,
 ): ConversionResult[] {
-  return messages.map((message) => convertMessage(message));
+  return messages.map((message) => convertMessage(message, userMapping));
 }
 
 export function convertMessageWithValidation(
   message: unknown,
+  userMapping?: UserMapping,
 ): ConversionResult {
   const parseResult = SlackMessageSchema.safeParse(message);
 
@@ -144,7 +153,7 @@ export function convertMessageWithValidation(
     };
   }
 
-  return convertMessage(parseResult.data as SlackMessage);
+  return convertMessage(parseResult.data as SlackMessage, userMapping);
 }
 
 function hasContent(message: SlackMessage): boolean {

@@ -35,22 +35,26 @@ import {
   isRichTextQuote,
   isRichTextSection,
   isSectionBlock,
+  type UserMapping,
 } from "./types";
 
-export function parseBlocks(blocks: Block[]): string {
+export function parseBlocks(
+  blocks: Block[],
+  userMapping?: UserMapping,
+): string {
   const parsedBlocks = blocks
     .map((block) => {
       if (isRichTextBlock(block)) {
         return parseRichTextBlock(block);
       }
       if (isSectionBlock(block)) {
-        return parseSectionBlock(block);
+        return parseSectionBlock(block, userMapping);
       }
       if (isHeaderBlock(block)) {
         return parseHeaderBlock(block);
       }
       if (isContextBlock(block)) {
-        return parseContextBlock(block);
+        return parseContextBlock(block, userMapping);
       }
       if (isDividerBlock(block)) {
         return parseDividerBlock(block);
@@ -172,7 +176,10 @@ function parseRichTextPreformatted(preformatted: RichTextPreformatted): string {
   return `\`\`\`\n${content}\n\`\`\``;
 }
 
-export function parseSectionBlock(block: SectionBlock): string {
+export function parseSectionBlock(
+  block: SectionBlock,
+  userMapping?: UserMapping,
+): string {
   const parts: string[] = [];
 
   // テキストの処理
@@ -180,7 +187,7 @@ export function parseSectionBlock(block: SectionBlock): string {
     if (isPlainTextElement(block.text)) {
       parts.push(formatPlainText(block.text.text || ""));
     } else if (isMrkdwnElement(block.text)) {
-      parts.push(formatMrkdwn(block.text.text || ""));
+      parts.push(formatMrkdwn(block.text.text || "", userMapping));
     }
   }
 
@@ -193,15 +200,15 @@ export function parseSectionBlock(block: SectionBlock): string {
       if (field1 && field2) {
         const text1 = isPlainTextElement(field1)
           ? formatPlainText(field1.text || "")
-          : formatMrkdwn(field1.text || "");
+          : formatMrkdwn(field1.text || "", userMapping);
         const text2 = isPlainTextElement(field2)
           ? formatPlainText(field2.text || "")
-          : formatMrkdwn(field2.text || "");
+          : formatMrkdwn(field2.text || "", userMapping);
         fieldPairs.push(`${text1} | ${text2}`);
       } else if (field1) {
         const text1 = isPlainTextElement(field1)
           ? formatPlainText(field1.text || "")
-          : formatMrkdwn(field1.text || "");
+          : formatMrkdwn(field1.text || "", userMapping);
         fieldPairs.push(text1);
       }
     }
@@ -219,7 +226,10 @@ export function parseHeaderBlock(block: HeaderBlock): string {
   return `# ${text}`;
 }
 
-export function parseContextBlock(block: ContextBlock): string {
+export function parseContextBlock(
+  block: ContextBlock,
+  userMapping?: UserMapping,
+): string {
   const elements = block.elements || [];
   const texts = elements
     .map((element) => {
@@ -227,7 +237,7 @@ export function parseContextBlock(block: ContextBlock): string {
         return formatPlainText(element.text || "");
       }
       if ("type" in element && element.type === "mrkdwn") {
-        return formatMrkdwn(element.text || "");
+        return formatMrkdwn(element.text || "", userMapping);
       }
       // 画像要素は無視（または必要に応じて処理）
       return "";

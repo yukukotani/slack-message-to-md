@@ -155,3 +155,47 @@ Valid message"
 `;
 
 exports[`convertMultipleMessages 空の配列を処理 1`] = `[]`;
+
+exports[`convertMessage with userMapping ユーザーマッピングありでメンションを置き換え 1`] = `
+{
+  "markdown": 
+"**@U111111** - 2024-01-11 13:40:00
+
+Hello @田中太郎 and @山田花子!"
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage with userMapping ユーザーマッピングなしでデフォルト処理 1`] = `
+{
+  "markdown": 
+"**@U111111** - 2024-01-11 13:40:00
+
+Hello @U123456!"
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage with userMapping 部分的なユーザーマッピング 1`] = `
+{
+  "markdown": 
+"**@U111111** - 2024-01-11 13:40:00
+
+Hello @田中太郎 and @U999999!"
+,
+  "success": true,
+}
+`;
+
+exports[`convertMessage with userMapping 空のユーザーマッピング 1`] = `
+{
+  "markdown": 
+"**@U111111** - 2024-01-11 13:40:00
+
+Hello @U123456!"
+,
+  "success": true,
+}
+`;

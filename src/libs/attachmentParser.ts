@@ -1,25 +1,31 @@
 import type { MessageAttachment } from "@slack/types";
 import { parseBlocks } from "./blockParser";
 import { formatMrkdwn } from "./textFormatter";
-import { hasBlocks } from "./types";
+import { hasBlocks, type UserMapping } from "./types";
 
-export function parseAttachments(attachments: MessageAttachment[]): string {
+export function parseAttachments(
+  attachments: MessageAttachment[],
+  userMapping?: UserMapping,
+): string {
   if (!attachments || attachments.length === 0) {
     return "";
   }
 
   const parsedAttachments = attachments.map((attachment) =>
-    parseAttachment(attachment),
+    parseAttachment(attachment, userMapping),
   );
   return parsedAttachments.join("\n\n---\n\n");
 }
 
-function parseAttachment(attachment: MessageAttachment): string {
+function parseAttachment(
+  attachment: MessageAttachment,
+  userMapping?: UserMapping,
+): string {
   const parts: string[] = [];
 
   // pretext
   if (attachment.pretext) {
-    parts.push(formatMrkdwn(attachment.pretext));
+    parts.push(formatMrkdwn(attachment.pretext, userMapping));
   }
 
   // 作成者情報
@@ -43,10 +49,10 @@ function parseAttachment(attachment: MessageAttachment): string {
 
   // blocksがある場合は優先的に処理
   if (hasBlocks(attachment)) {
-    parts.push(parseBlocks(attachment.blocks));
+    parts.push(parseBlocks(attachment.blocks, userMapping));
   } else if (attachment.text) {
     // テキスト本文
-    parts.push(formatMrkdwn(attachment.text));
+    parts.push(formatMrkdwn(attachment.text, userMapping));
   }
 
   // フィールド

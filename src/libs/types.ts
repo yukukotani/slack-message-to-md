@@ -116,6 +116,8 @@ export type EditedInfo = {
   ts: string;
 };
 
+export type UserMapping = Record<string, string>;
+
 export function hasBlocks(
   message: SlackMessage,
 ): message is SlackMessage & { blocks: Block[] } {

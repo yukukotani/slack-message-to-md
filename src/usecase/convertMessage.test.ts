@@ -195,6 +195,59 @@ describe("convertMultipleMessages", () => {
   });
 });
 
+describe("convertMessage with userMapping", () => {
+  it("ユーザーマッピングありでメンションを置き換え", () => {
+    const message: SlackMessage = {
+      type: "message",
+      text: "Hello <@U123456> and <@U789012>!",
+      user: "U111111",
+      ts: "1704980400",
+    };
+    const userMapping = {
+      U123456: "田中太郎",
+      U789012: "山田花子",
+    };
+    const result = convertMessage(message, userMapping);
+    expect(result).toMatchSnapshot();
+  });
+
+  it("ユーザーマッピングなしでデフォルト処理", () => {
+    const message: SlackMessage = {
+      type: "message",
+      text: "Hello <@U123456>!",
+      user: "U111111",
+      ts: "1704980400",
+    };
+    const result = convertMessage(message);
+    expect(result).toMatchSnapshot();
+  });
+
+  it("部分的なユーザーマッピング", () => {
+    const message: SlackMessage = {
+      type: "message",
+      text: "Hello <@U123456> and <@U999999>!",
+      user: "U111111",
+      ts: "1704980400",
+    };
+    const userMapping = {
+      U123456: "田中太郎",
+    };
+    const result = convertMessage(message, userMapping);
+    expect(result).toMatchSnapshot();
+  });
+
+  it("空のユーザーマッピング", () => {
+    const message: SlackMessage = {
+      type: "message",
+      text: "Hello <@U123456>!",
+      user: "U111111",
+      ts: "1704980400",
+    };
+    const result = convertMessage(message, {});
+    expect(result).toMatchSnapshot();
+  });
+});
+
 describe("convertMessageWithValidation", () => {
   it("有効なSlackMessageオブジェクトを処理", () => {
     const message = {

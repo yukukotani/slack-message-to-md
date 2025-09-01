@@ -1,3 +1,5 @@
+import type { UserMapping } from "./types";
+
 const EMOJI_MAP: Record<string, string> = {
   ":smile:": "😄",
   ":smiley:": "😃",
@@ -118,7 +120,7 @@ const EMOJI_MAP: Record<string, string> = {
   ":speak_no_evil:": "🙊",
 };
 
-export function formatMrkdwn(text: string): string {
+export function formatMrkdwn(text: string, userMapping?: UserMapping): string {
   let result = text;
 
   // コードブロックを一時的に保護（```の直後・直前に改行がない場合は追加）
@@ -167,8 +169,10 @@ export function formatMrkdwn(text: string): string {
   // チャンネルメンション (<#C123456> -> #C123456)
   result = result.replace(/<#([^|>]+)>/g, "#$1");
 
-  // ユーザーメンション (<@U123456> -> @U123456)
-  result = result.replace(/<@([^|>]+)>/g, "@$1");
+  // ユーザーメンション (<@U123456> -> @displayName or @U123456)
+  result = result.replace(/<@([^|>]+)>/g, (_match, userId) => {
+    return userMapping?.[userId] ? `@${userMapping[userId]}` : `@${userId}`;
+  });
 
   // リンク (<url|label> -> [label](url))
   result = result.replace(/<([^|>]+)\|([^>]+)>/g, "[$2]($1)");
